@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
       });
       return await User.scope('currentUser').findByPk(user.id);
     } 
-    
+
     static associate(models) {
       // define association here
     }
@@ -59,6 +59,14 @@ module.exports = (sequelize, DataTypes) => {
             }
           }
         }
+      },
+      firstName:{
+        type: DataTypes.STRING,
+        allowNull:false,
+      },
+      lastName:{
+        type: DataTypes.STRING,
+        allowNull:false,
       },
       email: {
         type: DataTypes.STRING,
