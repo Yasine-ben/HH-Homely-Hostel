@@ -31,9 +31,11 @@ module.exports = (sequelize, DataTypes) => {
       }
     }
 
-    static async signup({ username, email, password }) {
+    static async signup({ firstName,lastName, username, email, password }) {
       const hashedPassword = bcrypt.hashSync(password);
       const user = await User.create({
+        firstName,
+        lastName,
         username,
         email,
         hashedPassword
@@ -43,14 +45,54 @@ module.exports = (sequelize, DataTypes) => {
 
     static associate(models) {
       // define association here
+      User.hasMany(models.Spot,{foreignKey:"ownerId", onDelete: 'CASCADE',  hooks: true })
+      User.hasMany(models.Booking,{foreignKey:"userId", onDelete: 'CASCADE',  hooks: true })
+      User.hasMany(models.Review,{foreignKey:"userId"})
+      User.belongsToMany(models.Spot, {
+        through: 'Booking',
+      })
+      User.belongsToMany(models.Spot,{
+        through:'Review',
+      })
+
     }
   };
 
-  User.init(
-    {
+  User.init({
+    firstName:{
+        type: DataTypes.STRING,
+        allowNull:false,
+        validate:{
+          mustBeLetters(value){
+            let split = value.toString()
+            split = split.split("")
+            for(let letters of split){
+              if(letters.toLowerCase() === letters.toUpperCase()){
+                throw new Error("Must contain only letters")
+              }
+            }
+          }
+        }
+      },
+      lastName:{
+        type: DataTypes.STRING,
+        allowNull:false,
+        validate:{
+          mustBeLetters(value){
+            let split = value.toString()
+            split = split.split("")
+            for(let letters of split){
+              if(letters.toLowerCase() === letters.toUpperCase()){
+                throw new Error("Must contain only letters")
+              }
+            }
+          }
+        }
+      },
       username: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique:true,
         validate: {
           len: [4, 30],
           isNotEmail(value) {
@@ -60,17 +102,10 @@ module.exports = (sequelize, DataTypes) => {
           }
         }
       },
-      firstName:{
-        type: DataTypes.STRING,
-        allowNull:false,
-      },
-      lastName:{
-        type: DataTypes.STRING,
-        allowNull:false,
-      },
       email: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique:true,
         validate: {
           len: [3, 256],
           isEmail: true
