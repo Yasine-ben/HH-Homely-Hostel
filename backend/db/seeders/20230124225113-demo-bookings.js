@@ -7,13 +7,13 @@ if(process.env.NODE_ENV === 'developement') {
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
-    options.tableName = 'Bookings';
-    return queryInterface.bulkInsert(options, [], {});
+    //options.tableName = 'Bookings';
+    //return queryInterface.bulkInsert(options, [], {});
   },
 
   async down (queryInterface, Sequelize) {
-    options.tableName = "Bookings";
-    const Op = Sequelize.Op;
-    return queryInterface.bulkDelete(options, {});
+    //options.tableName = "Bookings";
+    //const Op = Sequelize.Op;
+    //return queryInterface.bulkDelete(options, {});
   }
 };
