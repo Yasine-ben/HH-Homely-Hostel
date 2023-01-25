@@ -107,11 +107,11 @@ const seedBookings = (num) => {
 
     return bookings
 }
-
+// console.log(bcrypt.hashSync("password"))
 // console.log(seedUsers(20))
 // console.log(seedSpots(20))
 // console.log(seedSpotImages(20))
 // console.log(seedReviewImages(10))
 // console.log(seedReviews(20))
-console.log(seedBookings(10))
+// console.log(seedBookings(10))
 module.exports = {seedUsers,seedSpots,seedSpotImages,seedReviewImages,seedReviews,seedBookings}
