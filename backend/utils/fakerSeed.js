@@ -92,8 +92,8 @@ const seedBookings = (num) => {
     
     for(let i in bookings){
 
-        const startDate = faker.date.between('2023-01-01T00:00:00.000Z', '2023-12-01T00:00:00.000Z')
-        const endDate = faker.date.soon(30,startDate)
+        const startDate = faker.date.between('2023-01-01', '2023-12-01').toISOString()
+        const endDate = faker.date.soon(30,startDate).toISOString()
 
         //shorten dates later please
 
@@ -112,6 +112,6 @@ const seedBookings = (num) => {
 // console.log(seedSpots(20))
 // console.log(seedSpotImages(20))
 // console.log(seedReviewImages(10))
-// console.log(seedReviews())
-console.log(seedBookings(2))
+// console.log(seedReviews(20))
+console.log(seedBookings(10))
 module.exports = {seedUsers,seedSpots,seedSpotImages,seedReviewImages,seedReviews,seedBookings}
