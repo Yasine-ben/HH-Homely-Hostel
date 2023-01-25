@@ -2,10 +2,6 @@
 const {
   Model
 } = require('sequelize');
-// import {Spots} from './spot' //not sure
-// import {Users} from './user' //not sure
-const {Spots} = require('../migrations/20230124161631-create-spot')
-const {Users} = require('../migrations/20230124000225-create-user')
 module.exports = (sequelize, DataTypes) => {
   class Booking extends Model {
     /**
@@ -23,13 +19,13 @@ module.exports = (sequelize, DataTypes) => {
     spotId: {
       type:DataTypes.INTEGER,
       allowNull:false,
-      references:{model:Spots,key:'id'},
+      references:{model:"Spots",key:'id'},
       onDelete:"CASCADE"
     },
     userId: {
       type:DataTypes.INTEGER,
       allowNull:false,
-      references:{model:Users,key:'id'},
+      references:{model:"Users",key:'id'},
       onDelete:"CASCADE"
     },
     startDate: {
