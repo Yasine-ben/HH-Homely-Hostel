@@ -11,11 +11,12 @@ module.exports = {
     options.tableName = 'Users';
     return queryInterface.bulkInsert(options, [
       {
-        firstName: 'Mattie',
-        lastName: 'Hermann',
-        username: '30_Bruen',
-        email: '256_Daugherty@yahoo.com',
-        hashedPassword: '$2a$10$a7wK1Gh2W1V.gQj7tF18gOO0OX878pYuV7dI.7IgxI6vM4Rl/wJSa'
+        firstName: 'demo',
+        lastName: 'user',
+        username: 'demo_user123',
+        email: 'demo_user_123@demo.com',
+        hashedPassword: '$2a$10$o6MS2Gn.ZTMSmXJWRvo6wOu1Rnk5CK7XpH1QyFAZ0CB1acFVE9k2q'
+        //password = "password"
       },
       {
         firstName: 'Bartholome',
