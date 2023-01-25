@@ -4,8 +4,8 @@ const {
 } = require('sequelize');
 // import {Spots} from './spot' //not sure
 // import {Users} from './user' //not sure
-const {Spots} = require('./spot')
-const {Users} = require('./user')
+const {Spots} = require('../migrations/20230124161631-create-spot')
+const {Users} = require('../migrations/20230124000225-create-user')
 module.exports = (sequelize, DataTypes) => {
   class Booking extends Model {
     /**
