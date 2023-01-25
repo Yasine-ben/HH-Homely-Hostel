@@ -65,7 +65,7 @@ router.get(
       const { user } = req;
       if (user) {
         return res.json({
-          user: user.toSafeObject()
+          user: user
         });
       } else return res.json({ user: null });
     }
