@@ -4,6 +4,8 @@ const {
 } = require('sequelize');
 // import {Spots} from './spot' //not sure
 // import {Users} from './user' //not sure
+const {Spots} = require('./spot')
+const {Users} = require('./user')
 module.exports = (sequelize, DataTypes) => {
   class Booking extends Model {
     /**
@@ -36,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     endDate: {
       type:DataTypes.DATE,
-      allowNull:false,
+      allowNull:false
     }
   }, {
     sequelize,
