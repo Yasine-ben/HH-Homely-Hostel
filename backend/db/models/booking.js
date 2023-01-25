@@ -2,8 +2,8 @@
 const {
   Model
 } = require('sequelize');
-import {Spots} from './spot' //not sure
-import {Users} from './user' //not sure
+// import {Spots} from './spot' //not sure
+// import {Users} from './user' //not sure
 module.exports = (sequelize, DataTypes) => {
   class Booking extends Model {
     /**
