@@ -2,8 +2,7 @@
 const express = require('express');
 
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
-const { Spot } = require('../../db/models');
-const sequelize = require('sequelize')
+const { Spot,Review,ReviewImage,Booking,User,SpotImage,sequelize} = require('../../db/models');
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
@@ -42,13 +41,61 @@ const validateSpot = [  //validator for the creation of spots
 
 // Get all Spots
 // Doesnt require authentication
-// WORKING!! 
+// WORKING but needs avg rating functionality and images
 router.get('/', async (req,res) => { 
-    const spots = await Spot.findAll({})
-    res.json(spots)
+    const allSpots = await Spot.findAll({include:[{
+        model: Review
+    },
+    {
+        model:SpotImage
+    }    
+    ]}
+    )
+
+    let spots = []
+    for(let i = 0;i<allSpots.length;i++){spots.push(allSpots[i].toJSON())}
+
+    function AverageReviewCalc(){
+        for(let a = 0; a<spots.length;a++){
+            let len = 0
+            let total = 0
+        if(spots[a].Reviews){
+            for(let i = 0; i<spots[a].Reviews.length; i++){
+                total += spots[a].Reviews[i].stars
+                len++
+            }
+
+            if(len === 0){
+                spots[a].avgRating = 'No Reviews have been submitted for this spot :|'
+            }else{
+                spots[a].avgRating = (total/len).toFixed(1)
+            }
+            delete spots[a].Reviews
+        }     
+        }
+    }
+    function SpotImageCheck(){
+        spots.forEach(spot => {
+            spot.SpotImages.forEach(spotImage => {
+                if(spotImage.preview === true){
+                    spot.previewImage = spotImage.url
+                }else{
+                    spot.previewImage = "There are no Images for this spot :|"
+                }
+                delete spot.SpotImages
+            })
+        })
+    }
+
+    AverageReviewCalc()
+    SpotImageCheck()
+
+    res.json({"spots":spots})
 })
 
 // Create a spot
+// Requires Authentication
+// Working!!!
 router.post('/', requireAuth, validateSpot, async (req,res) => {
     const {address,city,state,country,lat,lng,name,description,price} = req.body
 
@@ -59,8 +106,71 @@ router.post('/', requireAuth, validateSpot, async (req,res) => {
 })
 
 // Get all Spots owned by the Current User
-router.get('/current',(req,res) => {
+// Requires Authentication
+// tested
+router.get('/current', requireAuth, async(req,res) => {
+    console.log("USER ID",req.user.id)
+    const currentUserSpots = await Spot.findAll({
+        where:{ownerId:req.user.id},
+        include:[{
+            model: Review
+        },
+        {
+            model:SpotImage
+        }    
+        ]
+    })
 
+    let spots = []
+    for(let i = 0;i<currentUserSpots.length;i++){spots.push(currentUserSpots[i].toJSON())}
+
+    function AverageReviewCalc(){
+        for(let a = 0; a<currentUserSpots.length;a++){
+            let len = 0
+            let total = 0
+        
+            for(let i = 0; i<spots[a].Reviews.length; i++){
+                total += spots[a].Reviews[i].stars
+                len++
+            }
+
+            if(len === 0){
+                spots[a].avgRating = 'No Reviews have been submitted for this spot :|'
+            }else{
+                spots[a].avgRating = (total/len).toFixed(1)
+            }
+            delete spots[a].Reviews
+      }     
+    }
+    function SpotImageCheck(){
+        // for(let a = 0; a<spots.length;a++){
+        //     for(let i = 0; i<spots[a].SpotImages.length; i++){
+        //         if(spots[a].SpotImages[i].Preview === true){
+        //             spots[a].previewImage = spots[a].SpotImage[i].url
+        //         }else{
+        //             spots[a].previewImage = "There are no Images for this Spot :|"
+        //         }
+        //         console.log("aijf;'aopijfsaop'ijfaop'isjf'aposfj'apsojfa'psof'aopsj")
+        //         delete spots[a].SpotImages
+        //     }
+        // }
+        spots.forEach(spot => {
+            spot.SpotImages.forEach(spotImage => {
+                if(spotImage.preview === true){
+                    spot.previewImage = spotImage.url
+                }else{
+                    spot.previewImage = "There are no Images for this spot :|"
+                }
+                delete spot.SpotImages
+            })
+        })
+    }
+
+    AverageReviewCalc()
+    SpotImageCheck()
+    
+    res.statusCode = 200
+    res.json({'Spots':spots})
 })
 
 // Get details of a Spot from an id

@@ -12,12 +12,12 @@ module.exports = {
       {
         spotId: '1',
         url: 'https://loremflickr.com/640/480/cats',
-        preview: false
+        preview: true
       },
       {
         spotId: '2',
         url: 'https://loremflickr.com/640/480/cats',
-        preview: false
+        preview: true
       },
       {
         spotId: '3',
@@ -27,7 +27,7 @@ module.exports = {
       {
         spotId: '4',
         url: 'https://loremflickr.com/640/480/cats',
-        preview: false
+        preview: true
       },
       {
         spotId: '5',
@@ -37,7 +37,7 @@ module.exports = {
       {
         spotId: '6',
         url: 'https://loremflickr.com/640/480/cats',
-        preview: false
+        preview: true
       },
       {
         spotId: '7',
@@ -52,12 +52,12 @@ module.exports = {
       {
         spotId: '9',
         url: 'https://loremflickr.com/640/480/cats',
-        preview: false
+        preview: true
       },
       {
         spotId: '10',
         url: 'https://loremflickr.com/640/480/cats',
-        preview: false
+        preview: true
       },
       {
         spotId: '11',
@@ -72,7 +72,7 @@ module.exports = {
       {
         spotId: '13',
         url: 'https://loremflickr.com/640/480/cats',
-        preview: false
+        preview: true
       },
       {
         spotId: '14',
@@ -82,22 +82,22 @@ module.exports = {
       {
         spotId: '15',
         url: 'https://loremflickr.com/640/480/cats',
-        preview: false
+        preview: true
       },
       {
         spotId: '16',
         url: 'https://loremflickr.com/640/480/cats',
-        preview: false
+        preview: true
       },
       {
         spotId: '17',
         url: 'https://loremflickr.com/640/480/cats',
-        preview: false
+        preview: true
       },
       {
         spotId: '18',
         url: 'https://loremflickr.com/640/480/cats',
-        preview: false
+        preview: true
       },
       {
         spotId: '19',
