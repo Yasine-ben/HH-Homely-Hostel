@@ -39,6 +39,14 @@ const validateSpot = [  //validator for the creation of spots
     handleValidationErrors
 ];
 
+const validateSpotImage =[
+    check('url')
+        .exists({ checkFalsy:true}).withMessage("image url required"),
+    check('preview')
+        .exists({ checkFalsy:true}).withMessage("preview must exist"),
+    handleValidationErrors
+]
+
 // Get all Spots
 // Doesnt require authentication
 // WORKING but needs avg rating functionality and images
@@ -174,23 +182,114 @@ router.get('/current', requireAuth, async(req,res) => {
 })
 
 // Get details of a Spot from an id
-router.get('/:spotId',(req,res) => {
+// Does not require authentication
+// Complete
+router.get('/:spotId',async(req,res) => {
+    const spot = await Spot.findByPk(req.params.spotId,{
+        include:[{
+            model:Review
+        },
+        {
+            model:SpotImage,
+            attributes:['id','url','preview']
+        },
+        {
+            model:User,
+            attributes:['id','firstName','lastName']
+        }
+        ]}
+    )
+    
+    if(spot){
+        let useableSpot = spot.toJSON()
+        let len = 0
+        let total = 0 
 
+        useableSpot.Reviews.forEach(review => {
+            len++
+            total += review.stars
+        })
+        if(!(len === 0)) {
+            useableSpot.numReviews = len
+            useableSpot.avgStarRating = (total/len).toFixed(1)
+        }else{
+            useableSpot.numReviews = len
+            useableSpot.avgStarRating = "not enough reviews have been submitted"
+        }
+        delete useableSpot.Reviews
+        
+        useableSpot.Owner = useableSpot.User
+        delete useableSpot.User
+
+        //maybe format the res better :((
+
+        res.statusCode = 200
+        res.json(useableSpot)
+    }else{
+        res.statusCode = 404
+    res.send({"message":"Spot couldn't be found","statusCode":res.statusCode})
+    }
 })
 
 // Add an Image to a Spot based on the Spot's id
-router.post('/:spotId/images', (req,res) => {
+router.post('/:spotId/images', requireAuth, validateSpotImage, async(req,res) => {
+    const spot = await Spot.findByPk(req.params.spotId)
+    const {url,preview} = req.body
+    if(spot){
+        if(spot.ownerId == req.user.id){
+            const spotImage = await SpotImage.create({
+                spotId:req.params.spotId,
+                url,
+                preview
+            })
+            
+            const useableSpotImage = spotImage.toJSON()
+            delete useableSpotImage.spotId
+            delete useableSpotImage.createdAt
+            delete useableSpotImage.updatedAt
 
+            res.json(useableSpotImage)
+        }
+        else{
+            res.statusCode = 404
+            res.json({"message":"You do not own this spot","StatusCode":res.statusCode})
+        }
+    }
+    else{
+        res.statusCode = 404
+        res.json({"message":"Spot couldn't be found","StatusCode":res.statusCode})
+    }
+    
+    
 })
 
 // Edit a Spot
-router.put('/:spotId',(req,res) => {
+router.put('/:spotId',async (req,res) => {
 
 })
 
 // Delete a Spot
-router.delete('/:spotId', (req,res) => {
-
+// Require authentication
+// Spot must belong to current user
+// TESTED WORKS!!
+router.delete('/:spotId',requireAuth, async (req,res) => {
+    const spot = await Spot.findByPk(req.params.spotId)
+    
+    if(spot){
+        console.log(spot.dataValues.ownerId == req.user.id)
+        if(spot.ownerId == req.user.id){
+            await spot.destroy();
+            res.statusCode = 200
+            res.json({"message":"Successfully deleted","statusCode":res.statusCode})
+        }else{
+            res.statusCode = 404
+            res.json({"message":"You do not own this spot","StatusCode":res.statusCode})
+        }
+    }
+    else{
+        res.statusCode = 404
+        res.json({"message":"Spot couldn't be found","StatusCode":res.statusCode})
+    }
 })
 
 
