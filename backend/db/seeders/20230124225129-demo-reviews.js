@@ -10,13 +10,13 @@ module.exports = {
    options.tableName = 'Reviews';
    return queryInterface.bulkInsert(options, [
     {
-      spotId: 5,
+      spotId: 1,
       userId: 1,
       review: 'Architecto maiores ratione animi odit nisi pariatur explicabo ratione. Suscipit blanditiis consectetur numquam labore explicabo. Eaque eum voluptatibus.',
       stars: 3
     },
     {
-      spotId: 17,
+      spotId: 1,
       userId: 7,
       review: 'Sapiente adipisci temporibus. Incidunt fugiat quisquam veritatis fugit et natus accusamus. Libero quam explicabo cumque totam laborum aperiam id.',
       stars: 2
@@ -28,19 +28,19 @@ module.exports = {
       stars: 2
     },
     {
-      spotId: 4,
+      spotId: 1,
       userId: 15,
       review: 'Odit nulla nihil. Iusto omnis animi impedit. Enim dicta eaque a facere.',
       stars: 3
     },
     {
-      spotId: 5,
+      spotId: 1,
       userId: 6,
       review: 'Voluptatibus provident ducimus labore laboriosam aperiam ipsa nesciunt. Totam totam odio repellat dolorem corrupti nesciunt perspiciatis dignissimos eos. Aspernatur officia consequuntur facilis.',
       stars: 1
     },
     {
-      spotId: 8,
+      spotId: 1,
       userId: 6,
       review: 'Ipsum sed cupiditate illo sit harum nulla et velit. Quos nihil doloremque nostrum cupiditate laborum deleniti magnam illo cum. Incidunt rerum quo vitae veniam ullam tempora nesciunt.',
       stars: 5
