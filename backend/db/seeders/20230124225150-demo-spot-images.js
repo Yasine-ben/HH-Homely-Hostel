@@ -10,11 +10,6 @@ module.exports = {
     options.tableName = 'SpotImages';
     return queryInterface.bulkInsert(options, [
       {
-        spotId: '0',
-        url: 'https://loremflickr.com/640/480/cats',
-        preview: false
-      },
-      {
         spotId: '1',
         url: 'https://loremflickr.com/640/480/cats',
         preview: false
