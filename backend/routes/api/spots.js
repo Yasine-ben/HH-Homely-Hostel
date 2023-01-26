@@ -49,7 +49,7 @@ const validateSpotImage =[
 
 // Get all Spots
 // Doesnt require authentication
-// WORKING but needs avg rating functionality and images
+// TESTED WORKS
 router.get('/', async (req,res) => { 
     const allSpots = await Spot.findAll({include:[{
         model: Review
@@ -103,7 +103,7 @@ router.get('/', async (req,res) => {
 
 // Create a spot
 // Requires Authentication
-// Working!!!
+// TESTED WORKS
 router.post('/', requireAuth, validateSpot, async (req,res) => {
     const {address,city,state,country,lat,lng,name,description,price} = req.body
 
@@ -115,7 +115,7 @@ router.post('/', requireAuth, validateSpot, async (req,res) => {
 
 // Get all Spots owned by the Current User
 // Requires Authentication
-// tested
+// TESTED WORKS 
 router.get('/current', requireAuth, async(req,res) => {
     console.log("USER ID",req.user.id)
     const currentUserSpots = await Spot.findAll({
@@ -183,7 +183,7 @@ router.get('/current', requireAuth, async(req,res) => {
 
 // Get details of a Spot from an id
 // Does not require authentication
-// Complete
+// TESTED WORKS
 router.get('/:spotId',async(req,res) => {
     const spot = await Spot.findByPk(req.params.spotId,{
         include:[{
@@ -232,6 +232,9 @@ router.get('/:spotId',async(req,res) => {
 })
 
 // Add an Image to a Spot based on the Spot's id
+// Requires authentication
+// Spot must be owned by current user
+// TESTED WORKS
 router.post('/:spotId/images', requireAuth, validateSpotImage, async(req,res) => {
     const spot = await Spot.findByPk(req.params.spotId)
     const {url,preview} = req.body
@@ -242,7 +245,7 @@ router.post('/:spotId/images', requireAuth, validateSpotImage, async(req,res) =>
                 url,
                 preview
             })
-            
+
             const useableSpotImage = spotImage.toJSON()
             delete useableSpotImage.spotId
             delete useableSpotImage.createdAt
@@ -264,14 +267,30 @@ router.post('/:spotId/images', requireAuth, validateSpotImage, async(req,res) =>
 })
 
 // Edit a Spot
-router.put('/:spotId',async (req,res) => {
-
+// Require authentication
+// Spot must be owned current user
+// TESTED WORKS
+router.put('/:spotId',requireAuth, validateSpot, async (req,res) => {
+    const spot = await Spot.findByPk(req.params.spotId)
+    const {address,city,state,country,lat,lng,name,description,price} = req.body
+    if(spot){
+        if(spot.ownerId == req.user.id){
+            await spot.update({address,city,state,country,lat,lng,name,description,price})
+            res.json(spot) 
+        }else{
+            res.statusCode = 404
+            res.json({"message":"You do not own this spot","StatusCode":res.statusCode})
+        }
+    }else{
+        res.statusCode = 404
+        res.json({"message":"Spot couldn't be found","StatusCode":res.statusCode})
+    }
 })
 
 // Delete a Spot
 // Require authentication
 // Spot must belong to current user
-// TESTED WORKS!!
+// TESTED WORKS
 router.delete('/:spotId',requireAuth, async (req,res) => {
     const spot = await Spot.findByPk(req.params.spotId)
     
