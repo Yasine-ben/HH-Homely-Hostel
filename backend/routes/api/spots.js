@@ -39,6 +39,14 @@ const validateSpot = [  //validator for the creation of spots
     handleValidationErrors
 ];
 
+const validateSpotImage =[
+    check('url')
+        .exists({ checkFalsy:true}).withMessage("image url required"),
+    check('preview')
+        .exists({ checkFalsy:true}).withMessage("preview must exist"),
+    handleValidationErrors
+]
+
 // Get all Spots
 // Doesnt require authentication
 // WORKING but needs avg rating functionality and images
@@ -175,7 +183,7 @@ router.get('/current', requireAuth, async(req,res) => {
 
 // Get details of a Spot from an id
 // Does not require authentication
-// In Progress
+// Complete
 router.get('/:spotId',async(req,res) => {
     const spot = await Spot.findByPk(req.params.spotId,{
         include:[{
@@ -224,8 +232,35 @@ router.get('/:spotId',async(req,res) => {
 })
 
 // Add an Image to a Spot based on the Spot's id
-router.post('/:spotId/images', async(req,res) => {
+router.post('/:spotId/images', requireAuth, validateSpotImage, async(req,res) => {
+    const spot = await Spot.findByPk(req.params.spotId)
+    const {url,preview} = req.body
+    if(spot){
+        if(spot.ownerId == req.user.id){
+            const spotImage = await SpotImage.create({
+                spotId:req.params.spotId,
+                url,
+                preview
+            })
+            
+            const useableSpotImage = spotImage.toJSON()
+            delete useableSpotImage.spotId
+            delete useableSpotImage.createdAt
+            delete useableSpotImage.updatedAt
 
+            res.json(useableSpotImage)
+        }
+        else{
+            res.statusCode = 404
+            res.json({"message":"You do not own this spot","StatusCode":res.statusCode})
+        }
+    }
+    else{
+        res.statusCode = 404
+        res.json({"message":"Spot couldn't be found","StatusCode":res.statusCode})
+    }
+    
+    
 })
 
 // Edit a Spot
