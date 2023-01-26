@@ -27,7 +27,7 @@ const seedSpots = num => {
 
     for(const i in spots){
         spots[i] = {
-            ownerId: rNum(10),
+            ownerId: i,
             address: faker.address.streetAddress(),
             city: faker.address.city(),
             state: faker.address.state(),
@@ -36,6 +36,7 @@ const seedSpots = num => {
             lng: faker.address.longitude(),
             name: faker.lorem.words(3),
             description: faker.lorem.sentence(),
+            price: faker.commerce.price()
         }
     }
     return spots
