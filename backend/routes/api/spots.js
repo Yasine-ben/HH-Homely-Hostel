@@ -174,8 +174,53 @@ router.get('/current', requireAuth, async(req,res) => {
 })
 
 // Get details of a Spot from an id
+// Does not require authentication
+// In Progress
 router.get('/:spotId',async(req,res) => {
+    const spot = await Spot.findByPk(req.params.spotId,{
+        include:[{
+            model:Review
+        },
+        {
+            model:SpotImage,
+            attributes:['id','url','preview']
+        },
+        {
+            model:User,
+            attributes:['id','firstName','lastName']
+        }
+        ]}
+    )
+    
+    if(spot){
+        let useableSpot = spot.toJSON()
+        let len = 0
+        let total = 0 
 
+        useableSpot.Reviews.forEach(review => {
+            len++
+            total += review.stars
+        })
+        if(!(len === 0)) {
+            useableSpot.numReviews = len
+            useableSpot.avgStarRating = (total/len).toFixed(1)
+        }else{
+            useableSpot.numReviews = len
+            useableSpot.avgStarRating = "not enough reviews have been submitted"
+        }
+        delete useableSpot.Reviews
+        
+        useableSpot.Owner = useableSpot.User
+        delete useableSpot.User
+
+        //maybe format the res better :((
+
+        res.statusCode = 200
+        res.json(useableSpot)
+    }else{
+        res.statusCode = 404
+    res.send({"message":"Spot couldn't be found","statusCode":res.statusCode})
+    }
 })
 
 // Add an Image to a Spot based on the Spot's id
