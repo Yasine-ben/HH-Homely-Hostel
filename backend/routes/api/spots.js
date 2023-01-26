@@ -174,23 +174,42 @@ router.get('/current', requireAuth, async(req,res) => {
 })
 
 // Get details of a Spot from an id
-router.get('/:spotId',(req,res) => {
+router.get('/:spotId',async(req,res) => {
 
 })
 
 // Add an Image to a Spot based on the Spot's id
-router.post('/:spotId/images', (req,res) => {
+router.post('/:spotId/images', async(req,res) => {
 
 })
 
 // Edit a Spot
-router.put('/:spotId',(req,res) => {
+router.put('/:spotId',async (req,res) => {
 
 })
 
 // Delete a Spot
-router.delete('/:spotId', (req,res) => {
-
+// Require authentication
+// Spot must belong to current user
+// TESTED WORKS!!
+router.delete('/:spotId',requireAuth, async (req,res) => {
+    const spot = await Spot.findByPk(req.params.spotId)
+    
+    if(spot){
+        console.log(spot.dataValues.ownerId == req.user.id)
+        if(spot.ownerId == req.user.id){
+            await spot.destroy();
+            res.statusCode = 200
+            res.json({"message":"Successfully deleted","statusCode":res.statusCode})
+        }else{
+            res.statusCode = 404
+            res.json({"message":"You do not own this spot","StatusCode":res.statusCode})
+        }
+    }
+    else{
+        res.statusCode = 404
+        res.json({"message":"Spot couldn't be found","StatusCode":res.statusCode})
+    }
 })
 
 
