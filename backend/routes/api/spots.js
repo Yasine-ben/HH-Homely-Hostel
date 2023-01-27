@@ -266,6 +266,26 @@ router.post('/:spotId/images', requireAuth, validateSpotImage, async(req,res) =>
     
 })
 
+// Get all reviews by a spots id
+// DOESNT REQUIRE AUTHENTICATION 
+// TESTED WORKS
+router.get('/:spotId/reviews', async (req,res) => {
+    const spotReview = await Review.findByPk(req.params.spotId, {
+        include:[
+        {
+            model:User,
+            attributes:['id','firstName','lastName']
+        },
+        {
+            model:ReviewImage,
+            attributes:['id','url']
+        }
+    ]
+    })
+    res.statusCode = 200
+    res.json({Reviews:[spotReview]})
+})
+
 // Edit a Spot
 // Require authentication
 // Spot must be owned current user
