@@ -282,8 +282,14 @@ router.get('/:spotId/reviews', async (req,res) => {
         }
     ]
     })
-    res.statusCode = 200
-    res.json({Reviews:[spotReview]})
+    if(spotReview){
+        res.statusCode = 200
+        res.json({Reviews:[spotReview]})
+    }else{
+        res.statusCode = 404
+        res.json({"message":"Spot couldn't be found","StatusCode":res.statusCode})
+    }
+    
 })
 
 // Edit a Spot
