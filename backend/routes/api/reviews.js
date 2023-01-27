@@ -17,6 +17,13 @@ const reviewValidator = [
         
     handleValidationErrors
 ]
+
+const imageValidator = [
+    check('url')
+    .exists({ checkFalsy:true}).withMessage("err.1 Review text is required"),
+    handleValidationErrors
+]
+
 // Get all reviews of the current user
 // REQUIRES Authentication
 // TESTED WORKING 
@@ -47,7 +54,7 @@ router.get('/current', requireAuth, async (req,res) => {
 // Edit a review
 // Requires Authentication
 // Review must belong to user
-// In progress
+// Complete
 router.put('/:reviewId', requireAuth, reviewValidator, async(req,res) => {
     const updatedReview = await Review.findByPk(req.params.reviewId)
     const {review,stars} = req.body 
@@ -64,6 +71,36 @@ router.put('/:reviewId', requireAuth, reviewValidator, async(req,res) => {
         res.json({"message":"Review couldn't be found","StatusCode":res.statusCode})
     }
     
+})
+
+// Add an image to a review with a review id
+// Requires authorization
+// Must belong to user
+// In Progress
+router.post('/:reviewId/images', requireAuth, async(req,res) => {
+    const reviewImages = await ReviewImage.findAll({where:{reviewId:req.params.reviewId}})
+    const review = await Review.findByPk(req.params.reviewId)
+    const {url} = req.body
+    if(review){
+        if(review.userId == req.user.id){ //if review is owned by user
+            if(reviewImages.length <= 10){ //if review length is less than or equal to 10
+                const newReviewImage = await ReviewImage.create({reviewId:req.params.reviewId,url})
+                res.statusCode = 200
+                res.json(newReviewImage)
+            }else{//review images greater than 10
+                res.statusCode = 403
+                res.json({"message":"Maximum number of images for this resource was reached (10)","StatusCode":res.statusCode})
+            }
+        }else{
+            res.statusCode = 404
+            res.json({"message":"You do not own this review","StatusCode":res.statusCode})
+        }
+    }else{
+        res.statusCode = 404
+        res.json({"message":"Review couldn't be found","StatusCode":res.statusCode})
+    }
+    
+    //reviews.length
 })
 
 // Delete a review
