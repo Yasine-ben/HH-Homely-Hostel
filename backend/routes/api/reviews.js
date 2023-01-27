@@ -40,6 +40,25 @@ router.get('/current', requireAuth, async (req,res) => {
     
 })
 
-
+// Delete a review
+// Require authentication
+// User must be owner of review to delete
+// In Progress
+router.delete('/:reviewId', requireAuth, async(req,res) => {
+    const review = await Review.findByPk(req.params.reviewId)
+    if(review){
+        if(review.userId == req.user.id){
+            await review.destroy()
+            res.statusCode = 200
+            res.json({"message":"Successfully deleted","statusCode":res.statusCode})
+        }else{
+            res.statusCode = 404
+            res.json({"message":"You do not own this review","statusCode":res.statusCode})
+        }
+    }else{
+        res.statusCode = 404
+        res.json({"message":"Review couldn't be found","statusCode":res.statusCode})
+    }
+})
 
 module.exports = router;

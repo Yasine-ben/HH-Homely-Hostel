@@ -47,6 +47,17 @@ const validateSpotImage =[
     handleValidationErrors
 ]
 
+const reviewValidator = [
+    check('review')
+        .exists({ checkFalsy:true}).withMessage("Review text is required"),
+    check('stars').exists({ checkFalsy:true}).custom(value => {
+        if(!(value<=5 || value >=1)) {
+        return Promise.reject('Stars must be an integer from 1 to 5')
+        }
+    }),
+    handleValidationErrors
+]
+
 // Get all Spots
 // Doesnt require authentication
 // TESTED WORKS
@@ -282,8 +293,14 @@ router.get('/:spotId/reviews', async (req,res) => {
         }
     ]
     })
-    res.statusCode = 200
-    res.json({Reviews:[spotReview]})
+    if(spotReview){
+        res.statusCode = 200
+        res.json({Reviews:[spotReview]})
+    }else{
+        res.statusCode = 404
+        res.json({"message":"Spot couldn't be found","StatusCode":res.statusCode})
+    }
+    
 })
 
 // Edit a Spot
@@ -304,6 +321,21 @@ router.put('/:spotId',requireAuth, validateSpot, async (req,res) => {
     }else{
         res.statusCode = 404
         res.json({"message":"Spot couldn't be found","StatusCode":res.statusCode})
+    }
+})
+
+// Create a review for a spot based on a spots id
+// Require authentication
+// IN PROGRESS //coming back to it later *** ***  **   *    *  *  * *  **  * * * * * * * * * * * * * *
+router.post('/:spotId/reviews', requireAuth, async(req,res) => {
+    const {review,stars} = req.body
+    const haveYouReviewed = await Review.findByPk(req.user.id)
+    if(!haveYouReviewed){
+        const newReview = await Review.create({spotId:req.params.spotId,userId:req.user.id,review,stars})
+        res.statusCode = 201
+        res.json(newReview)
+    }else{
+        res.json("ooasfoasfoaosf")
     }
 })
 
