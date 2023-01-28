@@ -11,6 +11,7 @@ const router = express.Router();
 // Delete spot image
 // Requires authentication
 // Spot must belong to current user
+// Complete
 router.delete('/:imageId',requireAuth, async(req,res) => {
     const image = await SpotImage.findAll({where:{id:req.params.imageId},include:[{model:Spot}]})
     //res.json(image)
