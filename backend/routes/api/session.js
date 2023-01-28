@@ -1,5 +1,4 @@
 // backend/routes/api/session.js
-// backend/routes/api/session.js
 const express = require('express');
 
 const { setTokenCookie, restoreUser } = require('../../utils/auth');
