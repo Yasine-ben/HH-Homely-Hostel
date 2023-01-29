@@ -7,6 +7,8 @@ const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 
 const router = express.Router();
+router.use(express.json());
+
 
 const validateSpot = [  //validator for the creation of spots
     check('address')//validator for address
@@ -77,19 +79,101 @@ const reviewValidator = [
 // Get all Spots
 // Doesnt require authentication
 // TESTED WORKS
+// add rest of pagination functionality
 router.get('/', async (req,res) => { 
-    const allSpots = await Spot.findAll({include:[{
+    const {minLat,maxLat,minLng,maxLng,minPrice,maxPrice} = req.query
+    let page = req.query.page === undefined ? 1 :parseInt(req.query.page)
+    let size = req.query.size === undefined ? 20 : parseInt(req.query.size)
+    
+    if(page<1 || page>10 || isNaN(page)){
+        res.statusCode = 400
+        res.json({
+            message: "Validation Error",
+            statusCode: res.statusCode,
+            errors: { page: "Page must be greater than or equal to 1" }
+        })
+    }
+    if(size <1 || size>20 || isNaN(size)){
+        res.statusCode = 400
+        res.json({
+            message: "Validation Error",
+            statusCode: res.statusCode,
+            errors: { page: "Size must be greater than or equal to 1" }
+        })
+    }
+    if(page >=1 && size >= 1){
+        limit = size
+        offset = size * (page-1)
+    }
+
+    if(minLat && isNaN(minLat)){
+        res.statusCode = 400
+        res.json({
+            message: "Validation Error",
+            statusCode: statusCode,
+            errors: { minLat:"Minimum latitude is invalid" }
+        })
+    }
+    if(maxLat && isNaN(maxLat)){
+        res.statusCode = 400
+        res.json({
+            message:"Validation Error",
+            statusCode: res.statusCode,
+            errors:{minLat:"Maximum latitude is invalid"}
+        })
+    }
+    if(minLng && isNaN(minLng)){
+        res.statusCode = 400
+        res.json({
+            message:"Validation Error",
+            statusCode: res.statusCode,
+            errors:{minLat:"Minimum longitude is invalid"}
+        })
+    }
+    if(maxLng && isNaN(maxLng)){
+        res.statusCode = 400
+        res.json({
+            message:"Validation Error",
+            statusCode: res.statusCode,
+            errors:{minLat:"Maximum longitude is invalid"}
+        })
+    }
+    if(minPrice && (isNaN(minPrice) || minPrice < 0)){
+        res.statusCode = 400
+        res.json({
+            message:"Validation Error",
+            statusCode: res.statusCode,
+            errors:{minLat:"Minimum price must be greater than or equal to 0"}
+        })
+    }
+    if(maxPrice && (isNaN(maxPrice) || maxPrice < 0 )){
+        res.statusCode = 400
+        res.json({
+            message:"Validation Error",
+            statusCode: res.statusCode,
+            errors:{minLat:"Maximum price must be greater than or equal to 0"}
+        })
+    }
+
+
+
+
+    const allSpots = await Spot.findAll({
+    include:[
+    {
         model: Review
     },
     {
         model:SpotImage
     }    
-    ]}
-    )
-
+    ],
+    limit:limit,
+    offset:offset
+    })
+    
     let spots = []
     for(let i = 0;i<allSpots.length;i++){spots.push(allSpots[i].toJSON())}
-
+    
     function AverageReviewCalc(){
         for(let a = 0; a<spots.length;a++){
             let len = 0
@@ -124,8 +208,8 @@ router.get('/', async (req,res) => {
 
     AverageReviewCalc()
     SpotImageCheck()
-
-    res.json({"spots":spots})
+    
+    res.json({"spots":spots,"page":page,"size":size})
 })
 
 // Create a spot
