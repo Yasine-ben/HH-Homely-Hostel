@@ -155,9 +155,6 @@ router.get('/', async (req,res) => {
         })
     }
 
-
-
-
     const allSpots = await Spot.findAll({
     include:[
     {
@@ -365,8 +362,8 @@ router.post('/:spotId/images', requireAuth, validateSpotImage, async(req,res) =>
             res.json(useableSpotImage)
         }
         else{
-            res.statusCode = 404
-            res.json({"message":"You do not own this spot","StatusCode":res.statusCode})
+            res.statusCode = 403
+            res.json({"message":"Forbidden","StatusCode":res.statusCode})
         }
     }
     else{
@@ -429,7 +426,7 @@ router.post('/:spotId/bookings', requireAuth, async(req,res) => {
             res.statusCode = 403
             res.json({
                 "message": "Past bookings can't be modified",
-                "statusCode": 403
+                "statusCode": res.statusCode
             })
         }
         spotDates.forEach(date => {
@@ -447,7 +444,7 @@ router.post('/:spotId/bookings', requireAuth, async(req,res) => {
                 res.statusCode = 403
                 res.json({
                     "message": "Sorry, this spot is already booked for the specified dates",
-                    "statusCode": 403,
+                    "statusCode": res.statusCode,
                     "errors": {
                       "endDate": `End date ->(${date.endDate}) conflicts with an existing booking`
                     }
@@ -462,15 +459,14 @@ router.post('/:spotId/bookings', requireAuth, async(req,res) => {
                 startDate,
                 endDate
             })
-            const resBooking = {}
             res.statusCode = 200
             res.json({bookings:newBooking})
         }else{ // You own this listing
-            res.statusCode = 404
-            res.json({"message": "You own this listing. You cannot make booking for your own bookings at this time","statusCode": res.statusCode})
+            res.statusCode = 403
+            res.json({"message": " 'Forbidden' You own this listing. You cannot make booking for your own bookings at this time","statusCode": res.statusCode})
         }
     }else{ // Spot does not exist
-        res.statusCode = 404
+        res.statusCode = 403
         res.json({"message": "This spot does not exist","statusCode": res.statusCode})
     }
 
@@ -514,8 +510,8 @@ router.put('/:spotId',requireAuth, validateSpot, async (req,res) => {
             await spot.update({address,city,state,country,lat,lng,name,description,price})
             res.json(spot) 
         }else{
-            res.statusCode = 404
-            res.json({"message":"You do not own this spot","StatusCode":res.statusCode})
+            res.statusCode = 403
+            res.json({"message":"Forbidden","StatusCode":res.statusCode})
         }
     }else{
         res.statusCode = 404
@@ -552,8 +548,8 @@ router.delete('/:spotId',requireAuth, async (req,res) => {
             res.statusCode = 200
             res.json({"message":"Successfully deleted","statusCode":res.statusCode})
         }else{
-            res.statusCode = 404
-            res.json({"message":"You do not own this spot","StatusCode":res.statusCode})
+            res.statusCode = 403
+            res.json({"message":"Forbidden","StatusCode":res.statusCode})
         }
     }
     else{

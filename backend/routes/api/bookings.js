@@ -21,8 +21,8 @@ router.delete('/:bookingId',requireAuth, async(req,res) => {
                 res.statusCode = 200
                 res.json({"message":"Successfully deleted","statusCode":res.statusCode})
             }else{
-                res.statusCode = 404
-                res.json({"message":"You do not own this booking","statusCode":res.statusCode})
+                res.statusCode = 403
+                res.json({"message":"Forbidden","statusCode":res.statusCode})
             }
         }else{
             res.statusCode = 404
@@ -65,7 +65,7 @@ router.put('/:bookingId',requireAuth, async(req,res) => {
                 res.statusCode = 403
                 res.json({
                     "message": "Past bookings can't be modified",
-                    "statusCode": 403
+                    "statusCode": res.statusCode
                 })
             }
             spotDates.forEach(date => {
@@ -83,7 +83,7 @@ router.put('/:bookingId',requireAuth, async(req,res) => {
                     res.statusCode = 403
                     res.json({
                         "message": "Sorry, this spot is already booked for the specified dates",
-                        "statusCode": 403,
+                        "statusCode": res.statusCode,
                         "errors": {
                           "endDate": `End date ->(${date.endDate}) conflicts with an existing booking`
                         }
@@ -94,8 +94,8 @@ router.put('/:bookingId',requireAuth, async(req,res) => {
             const updatedBooking = await booking.update({useableStartDate,useableEndDate})
             res.json(updatedBooking)
         }else{ // If user doesnt own listing
-            res.statusCode = 404
-            res.json({"message": "You do not own this listing","statusCode": res.statusCode})
+            res.statusCode = 403
+            res.json({"message": "Forbidden","statusCode": res.statusCode})
         }
     }else{// If booking doesnt exist
         res.statusCode = 404

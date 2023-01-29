@@ -22,8 +22,8 @@ router.delete('/:imageId',requireAuth, async(req,res) => {
             res.statusCode = 200
             res.json({"message":"Successfully deleted","statusCode":res.statusCode})
         }else{
-            res.statusCode = 404
-            res.json({"message":"You do not own this spot","statusCode":res.statusCode})
+            res.statusCode = 403
+            res.json({"message":"Forbidden","statusCode":res.statusCode})
         }
     }else{
         res.statusCode = 404
