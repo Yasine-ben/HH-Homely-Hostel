@@ -4,6 +4,7 @@ const express = require('express');
 const { setTokenCookie, requireAuth } = require('../../utils/auth');
 const { Spot,Review,ReviewImage,Booking,User,SpotImage,sequelize} = require('../../db/models');
 const { check } = require('express-validator');
+const {Op} = require('sequelize')
 const { handleValidationErrors } = require('../../utils/validation');
 
 const router = express.Router();
@@ -26,9 +27,9 @@ const imageValidator = [
 
 // Get all reviews of the current user
 // REQUIRES Authentication
-// TESTED WORKING 
+// Complete not tested
 router.get('/current', requireAuth, async (req,res) => {
-    const reviews = await Review.findByPk(req.user.id,{
+    const reviews = await Review.findAll({where:{userId:req.user.id},
         include:[
         {
             model:User,
@@ -44,10 +45,26 @@ router.get('/current', requireAuth, async (req,res) => {
         }
         ]
     })
-    const spotImages = await SpotImage.findByPk(reviews.spotId, {attributes:['url']})
-    const useableReview = reviews.toJSON()
-    useableReview.previewImage = spotImages.url
-    res.json({Reviews:[useableReview]})
+    //res.json({reviews})
+    let reviewz = []
+    reviews.forEach(review => {
+        reviewz.push(review.toJSON())
+    })
+    for(let review of reviewz){
+        let previewImages = await SpotImage.findOne({where:{[Op.and]:[{spotId:review.Spot.id},{preview:true}]}})
+        if(previewImages){
+            review.Spot.previewImage = previewImages.url
+        }else{
+            review.Spot.previewImage = "No preview images :("
+        }
+        
+    }
+    res.statusCode = 200
+    res.json({Reviews:reviewz})
+    // const spotImages = await SpotImage.findByPk(reviews.spotId, {attributes:['url']})
+    // const useableReview = reviews.toJSON()
+    // useableReview.previewImage = spotImages.url
+    // res.json({Reviews:[useableReview]})
     
 })
 

@@ -58,6 +58,22 @@ const reviewValidator = [
     handleValidationErrors
 ]
 
+// const bookingValidator = [
+//     check('startDate').exists({ checkFalsy:true}).custom(date => {
+//         const newDate = new Date(date)
+//         if(isNaN(newDate)) {
+//         return Promise.reject('Must be a valid start date')
+//         }
+//     }),
+//     check('endDate').exists({ checkFalsy:true}).custom(date => {
+//         const newDate = new Date(date)
+//         if(isNaN(newDate)) {
+//         return Promise.reject('Must be a valid end date')
+//         }
+//     }),
+//     handleValidationErrors
+// ]
+
 // Get all Spots
 // Doesnt require authentication
 // TESTED WORKS
@@ -275,6 +291,105 @@ router.post('/:spotId/images', requireAuth, validateSpotImage, async(req,res) =>
     }
     
     
+})
+
+// Get all bookings for a spot based on the spots id
+// Requires authentication
+// Return booking info (nothing about user that booked) if not owner of spot
+// Return booking info+user info for booking if spot is owned by user
+// Completed //refactor please
+router.get('/:spotId/bookings', requireAuth, async(req,res) => {
+   const spot = await Spot.findByPk(req.params.spotId)
+   if(spot){ // if spot exists 
+    if(spot.ownerId === req.user.id){ // if user owns the spot
+        const bookings = await Booking.findAll({ where:{spotId:req.params.spotId},include:{model:User} })
+        res.statusCode = 200
+        res.json({bookings})
+    }else{ // if user doesnt own the spot 
+        const bookings = await Booking.findAll({ where: {spotId:req.params.spotId }, attributes: ['spotId','startDate','endDate']})
+        res.statusCode = 200
+        res.json({ bookings })
+    }
+   }else{ // if spot cant be found
+    res.statusCode = 404
+    res.json({"message":"Spot couldn't be found","statusCode":res.statusCode})
+   }
+})
+
+// Create a Booking from a spot based on the spot id
+// Requires authenticaiton
+// Spot must NOTT belong to user
+// In progress
+router.post('/:spotId/bookings', requireAuth, async(req,res) => {
+    const spot = await Spot.findOne({where:{id:req.params.spotId}},{attributes:['ownerId']})
+    const spotDates = await Booking.findAll({where:{spotId:req.params.spotId},attributes:['id','startDate','endDate']})
+
+    const currentDate = new Date(Date.now())
+    const {startDate,endDate} = req.body
+    useableStartDate = new Date(startDate)
+    useableEndDate = new Date(endDate)
+    
+    if(spot){ //if spot exists
+
+        if(useableStartDate>=useableEndDate){ // Start date cannot come after end date
+            res.statusCode = 400
+            res.json({
+                "message": "Validation error",
+                "statusCode": res.statusCode,
+                "errors": {
+                    "endDate": "endDate cannot come before startDate"
+            }
+        })
+        }
+        if(useableEndDate<currentDate){ // Cannot modify past bookings
+            res.statusCode = 403
+            res.json({
+                "message": "Past bookings can't be modified",
+                "statusCode": 403
+            })
+        }
+        spotDates.forEach(date => {
+            if((date.startDate <= useableStartDate && date.endDate >= useableStartDate)){
+                res.statusCode = 403
+                res.json({
+                    "message": "Sorry, this spot is already booked for the specified dates",
+                    "statusCode": res.statusCode,
+                    "errors": {
+                      "startDate": `Start date ->(${date.startDate}) conflicts with an existing booking`,
+                    }
+                  })
+            }
+            if((date.startDate <= useableEndDate && date.endDate >= useableEndDate)){
+                res.statusCode = 403
+                res.json({
+                    "message": "Sorry, this spot is already booked for the specified dates",
+                    "statusCode": 403,
+                    "errors": {
+                      "endDate": `End date ->(${date.endDate}) conflicts with an existing booking`
+                    }
+                  })
+            }
+        })
+
+        if(!(spot.ownerId == req.user.id)){ //if user does not own spot
+            const newBooking = await Booking.create({
+                spotId:req.params.spotId,
+                userId:req.user.id,
+                startDate,
+                endDate
+            })
+            const resBooking = {}
+            res.statusCode = 200
+            res.json({bookings:newBooking})
+        }else{ // You own this listing
+            res.statusCode = 404
+            res.json({"message": "You own this listing. You cannot make booking for your own bookings at this time","statusCode": res.statusCode})
+        }
+    }else{ // Spot does not exist
+        res.statusCode = 404
+        res.json({"message": "This spot does not exist","statusCode": res.statusCode})
+    }
+
 })
 
 // Get all reviews by a spots id
