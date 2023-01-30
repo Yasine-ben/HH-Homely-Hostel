@@ -51,35 +51,23 @@ router.get('/current', requireAuth, async (req,res) => {
         }
         ]
     })
-    //res.json({reviews})
-    let reviewz = []
-    reviews.forEach(review => {
-        reviewz.push(review.toJSON())
-    })
-    for(let review of reviewz){
-        if(review.Spot){
-        let previewImages = await SpotImage.findOne({where:{spotId:review.spotId}})
-        if(previewImages || previewImages != null){
-            review.Spot.previewImage = previewImages.url
-            delete review.Spot.description
-            delete review.Spot.createdAt
-            delete review.Spot.updatedAt
-        }else{
-            review.Spot.previewImage = "No preview images :("
-            delete review.Spot.description
-            delete review.Spot.createdAt
-            delete review.Spot.updatedAt
-        }}
-        
+
+    let reviewList = [];
+
+    for (let review of reviews) {
+        review = review.toJSON();
+        const previewImage = review.Spot.SpotImages.find(spotImage => spotImage.preview === true)
+
+        if (previewImage) {review.Spot.previewImage = previewImage.url} //refactor refactor refactor
+        else {review.Spot.previewImage = 'No preview images :('}
+        delete review.Spot.SpotImages;
+
+        reviewList.push(review);
     }
-    res.statusCode = 200
-    return res.json({Reviews:reviewz})
-    // const spotImages = await SpotImage.findByPk(reviews.spotId, {attributes:['url']})
-    // const useableReview = reviews.toJSON()
-    // useableReview.previewImage = spotImages.url
-    // res.json({Reviews:[useableReview]})
-    
+    res.json({Reviews:reviewList});
 })
+
+    
 
 // Edit a review
 // Requires Authentication
