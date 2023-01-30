@@ -3,7 +3,7 @@
 // --> ERROR: Octal literals are not allowed in strict mode. <--
 const bcrypt = require("bcryptjs");
 let options = {}
-if(process.env.NODE_ENV === 'developement') {
+if(process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;
 }
 /** @type {import('sequelize-cli').Migration} */
