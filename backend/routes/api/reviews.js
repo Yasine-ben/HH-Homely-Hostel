@@ -144,7 +144,7 @@ router.delete('/:reviewId', requireAuth, async(req,res) => {
         }
     }else{
         res.statusCode = 404
-        returnres.json({"message":"Review couldn't be found","statusCode":res.statusCode})
+        return res.json({"message":"Review couldn't be found","statusCode":res.statusCode})
     }
 })
 
