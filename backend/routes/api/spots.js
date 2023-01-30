@@ -523,23 +523,43 @@ router.put('/:spotId',requireAuth, validateSpot, async (req,res) => {
 // Require authentication
 // IN PROGRESS //coming back to it later *** ***  **   *    *  *  * *  **  * * * * * * * * * * * * * *
 router.post('/:spotId/reviews', requireAuth, async(req,res) => {
-    const {review,stars} = req.body
+    // const {review,stars} = req.body
+    // const spot = await Spot.findByPk(req.params.spotId)
+    // if(!spot){
+    //     res.statusCode = 404
+    //     res.json({"message":"Spot couldn't be found","statusCode":res.statusCode})
+    // }
+    // const haveYouReviewed = await Review.findByPk(req.user.id)
+    // if(haveYouReviewed.spotId === res.params.spotId){
+        
+    // }
+    // if(!haveYouReviewed){
+    //     const newReview = await Review.create({spotId:req.params.spotId,userId:req.user.id,review,stars})
+    //     res.statusCode = 201
+    //     res.json(newReview)
+    // }else{
+    //     res.statusCode = 403
+    //     res.json({"message":"User already has a review for this spot","statusCode":res.statusCode})
+    // }
     const spot = await Spot.findByPk(req.params.spotId)
+    const {review,stars} = req.body
+    const reviews = await Review.findAll({
+        where:{
+            userId:req.user.id,
+            spotId:req.params.spotId
+        }
+    })
     if(!spot){
         res.statusCode = 404
         res.json({"message":"Spot couldn't be found","statusCode":res.statusCode})
     }
-    const haveYouReviewed = await Review.findByPk(req.user.id)
-    // if(haveYouReviewed.spotId === res.params.spotId){
-        
-    // }
-    if(!haveYouReviewed){
+    if(reviews){
+        res.statusCode = 403
+        res.json({"message":"User already has a review for this spot","statusCode":res.statusCode})
+    }else{
         const newReview = await Review.create({spotId:req.params.spotId,userId:req.user.id,review,stars})
         res.statusCode = 201
         res.json(newReview)
-    }else{
-        res.statusCode = 403
-        res.json({"message":"User already has a review for this spot","statusCode":res.statusCode})
     }
 })
 
