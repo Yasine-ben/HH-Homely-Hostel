@@ -36,7 +36,15 @@ router.get('/current', requireAuth, async (req,res) => {
             attributes:['id','firstName','lastName']
         },
         {
-            model:Spot
+            model: Spot,
+            attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'description', 'price'],
+            include: [
+                {
+                    as: 'previewImage',
+                    model: SpotImage,
+                    attributes: ['url']
+                }
+            ]
         },
         {
             model:ReviewImage,
