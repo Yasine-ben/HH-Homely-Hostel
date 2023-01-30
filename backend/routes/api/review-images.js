@@ -13,32 +13,48 @@ const router = express.Router();
 // User must own the review
 // Complete
 router.delete('/:imageId', requireAuth, async(req,res) => {
-    const image = await ReviewImage.findByPk(req.params.imageId, {
-        include: [
-            { 
-                model: Review,
-                attributes:['userId']
-            }
-        ]
-    });
+    // const image = await ReviewImage.findByPk(req.params.imageId, {
+    //     include: [
+    //         { 
+    //             model: Review,
+    //             attributes:['userId']
+    //         }
+    //     ]
+    // });
     
-    if (!image) {
-        res.statusCode = 404
-        return res.json({"message":"Review Image couldn't be found","statusCode":res.statusCode})
-    } 
-    if(image.Review.userId){ if (image.Review.userId !== req.user.id) {
-        res.statusCode = 403
-        return res.json({"message":"Forbidden","statusCode":res.statusCode})
-    } }
-    else {
-        await image.destroy();
-        res.statusCode = 200
-        return res.json({
-            message: "Successfully deleted",
-            statusCode: res.statusCode
-            });
-        }
+    // if (!image) {
+    //     res.statusCode = 404
+    //     return res.json({"message":"Review Image couldn't be found","statusCode":res.statusCode})
+    // } 
+    // else if(image.Review){ if (image.Review.userId !== req.user.id) {
+    //     res.statusCode = 403
+    //     return res.json({"message":"Forbidden","statusCode":res.statusCode})
+    // } }
+    // else {
+    //     await image.destroy();
+    //     res.statusCode = 200
+    //     return res.json({
+    //         message: "Successfully deleted",
+    //         statusCode: res.statusCode
+    //         });
+    //     }
         
-    })
+    // })
+    const image = await ReviewImage.findAll({where:{id:req.params.imageId},include:[{model:Review}]})
+    if(image[0]){
+        if(image[0].review.userId == req.user.id){
+            delete image[0].review
+            await image[0].destroy()
+            res.statusCode = 200
+            return res.json({"message":"Successfully deleted","statusCode":res.statusCode})
+        }else{
+            res.statusCode = 403
+            return res.json({"message":"Forbidden","statusCode":res.statusCode})
+        }
+    }else{
+        res.statusCode = 404
+        return res.json({"message":"Spot Image couldn't be found","statusCode":res.statusCode})
+    }
+})
     
 module.exports = router;
