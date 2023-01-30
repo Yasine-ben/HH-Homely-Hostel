@@ -42,7 +42,7 @@ router.delete('/:imageId', requireAuth, async(req,res) => {
     // })
     const image = await ReviewImage.findAll({where:{id:req.params.imageId},include:[{model:Review}]})
     if(image[0]){
-        if(image[0].review.userId == req.user.id){
+        if(image[0].Review.userId == req.user.id){
             delete image[0].review
             await image[0].destroy()
             res.statusCode = 200
