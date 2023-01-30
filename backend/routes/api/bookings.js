@@ -42,21 +42,24 @@ router.delete('/:bookingId',requireAuth, async(req,res) => {
 // *** Add in date validator ***
 // Complete not tested tho
 router.put('/:bookingId',requireAuth, async(req,res) => {
-    const booking = await Booking.findByPk(req.params.bookingId)
-    
-    const spotDates = await Booking.findAll({where:{spotId:booking.spotId},attributes:['id','startDate','endDate']})
-    
+    const booking = await Booking.findAll({
+        where:{id:req.params.bookingId}
+    })
+    let spotDates
+    if(booking){
+    spotDates = await Booking.findAll({where:{spotId:booking[0].spotId},attributes:['id','startDate','endDate']})
+    }
     // res.json(spotStartDates)
 
     const currentDate = new Date(Date.now())
     const {startDate,endDate} = req.body
     useableStartDate = new Date(startDate)
     useableEndDate = new Date(endDate)
-
+    
     //res.json({currentDate,useableStartDate,useableEndDate})
-    if(booking.length){ //added .length to see if that fixes error 
+    if(booking[0].length){ //added .length to see if that fixes error 
         
-        if(booking.userId === req.user.id){ // If user owns Booking
+        if(booking[0].userId === req.user.id){ // If user owns Booking
 
             if(useableStartDate>=useableEndDate){ // Start date cannot come after end date
                 res.statusCode = 400
@@ -98,7 +101,7 @@ router.put('/:bookingId',requireAuth, async(req,res) => {
                 }
             })
             
-            const updatedBooking = await booking.update({startDate:useableStartDate,endDate:useableEndDate})
+            const updatedBooking = await booking[0].update({startDate:useableStartDate,endDate:useableEndDate})
             return res.json(updatedBooking)
         }else{ // If user doesnt own listing
             res.statusCode = 403
