@@ -553,7 +553,7 @@ router.post('/:spotId/reviews', requireAuth, async(req,res) => {
         res.statusCode = 404
         res.json({"message":"Spot couldn't be found","statusCode":res.statusCode})
     }
-    if(reviews){
+    if(reviews.length){
         res.statusCode = 403
         res.json({"message":"User already has a review for this spot","statusCode":res.statusCode})
     }else{
