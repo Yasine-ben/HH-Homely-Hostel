@@ -47,7 +47,7 @@ router.put('/:bookingId',requireAuth, async(req,res) => {
     })
     let spotDates
     if(booking[0]){
-    spotDates = await Booking.findAll({where:{spotId:booking[0].spotId},attributes:['id','startDate','endDate']})
+    spotDates = await Booking.findAll({where:{spotId:booking[0].spotId},attributes:['id','userId','startDate','endDate']})
     }
     // res.json(spotStartDates)
 
@@ -59,7 +59,7 @@ router.put('/:bookingId',requireAuth, async(req,res) => {
     //res.json({currentDate,useableStartDate,useableEndDate})
     if(booking[0]){ //added .length to see if that fixes error 
         
-        if(booking[0].userId === req.user.id){ // If user owns Booking
+        if(booking[0].userId == req.user.id){ // If user owns Booking
 
             if(useableStartDate>=useableEndDate){ // Start date cannot come after end date
                 res.statusCode = 400
@@ -79,26 +79,28 @@ router.put('/:bookingId',requireAuth, async(req,res) => {
                 })
             }
             spotDates.forEach(date => {
-                if((date.startDate <= useableStartDate && date.endDate >= useableStartDate)){
-                    res.statusCode = 403
-                    return res.json({
-                        "message": "Sorry, this spot is already booked for the specified dates",
-                        "statusCode": res.statusCode,
-                        "errors": {
-                          "startDate": `Start date ->(${date.startDate}) conflicts with an existing booking`,
-                        }
-                      })
-                }
-                if((date.startDate <= useableEndDate && date.endDate >= useableEndDate)){
-                    res.statusCode = 403
-                    return res.json({
-                        "message": "Sorry, this spot is already booked for the specified dates",
-                        "statusCode": res.statusCode,
-                        "errors": {
-                          "endDate": `End date ->(${date.endDate}) conflicts with an existing booking`
-                        }
-                      })
-                }
+                if((date.startDate <= useableStartDate && date.endDate >= useableStartDate )){
+                    if(date.userid !== req.user.id){
+                        res.statusCode = 403
+                        return res.json({
+                            "message": "Sorry, this spot is already booked for the specified dates",
+                            "statusCode": res.statusCode,
+                            "errors": {
+                            "startDate": `Start date ->(${date.startDate}) conflicts with an existing booking`,
+                            }
+                        })}
+                
+                    if((date.startDate <= useableEndDate && date.endDate >= useableEndDate)){
+                        res.statusCode = 403
+                        return res.json({
+                            "message": "Sorry, this spot is already booked for the specified dates",
+                            "statusCode": res.statusCode,
+                            "errors": {
+                            "endDate": `End date ->(${date.endDate}) conflicts with an existing booking`
+                            }
+                        })
+                    }
+            }
             })
             
             const updatedBooking = await booking[0].update({startDate:useableStartDate,endDate:useableEndDate})
