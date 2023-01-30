@@ -37,13 +37,7 @@ router.get('/current', requireAuth, async (req,res) => {
         },
         {
             model: Spot,
-            attributes: {
-                exclude: ['createdAt', 'updatedAt', 'description']
-            },
-            include: {
-                model: SpotImage,
-                attributes: ['preview', 'url']
-            }
+            attributes: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'description', 'price'],
         },
         {
             model:ReviewImage,
@@ -51,23 +45,35 @@ router.get('/current', requireAuth, async (req,res) => {
         }
         ]
     })
-
-    let reviewList = [];
-
-    for (let review of reviews) {
-        review = review.toJSON();
-        const previewImage = review.Spot.SpotImages.find(spotImage => spotImage.preview === true)
-
-        if (previewImage) {review.Spot.previewImage = previewImage.url} //refactor refactor refactor
-        else {review.Spot.previewImage = 'No preview images :('}
-        delete review.Spot.SpotImages;
-
-        reviewList.push(review);
+    //res.json({reviews})
+    let reviewz = []
+    reviews.forEach(review => {
+        reviewz.push(review.toJSON())
+    })
+    for(let review of reviewz){
+        if(review.Spot){
+        let previewImages = await SpotImage.findOne({where:{spotId:review.spotId}})
+        if(previewImages || previewImages != null){
+            review.Spot.previewImage = previewImages.url
+            delete review.Spot.description
+            delete review.Spot.createdAt
+            delete review.Spot.updatedAt
+        }else{
+            review.Spot.previewImage = "No preview images :("
+            delete review.Spot.description
+            delete review.Spot.createdAt
+            delete review.Spot.updatedAt
+        }}
+        
     }
-    res.json({Reviews:reviewList});
-})
-
+    res.statusCode = 200
+    return res.json({Reviews:reviewz})
+    // const spotImages = await SpotImage.findByPk(reviews.spotId, {attributes:['url']})
+    // const useableReview = reviews.toJSON()
+    // useableReview.previewImage = spotImages.url
+    // res.json({Reviews:[useableReview]})
     
+})
 
 // Edit a review
 // Requires Authentication
@@ -138,7 +144,7 @@ router.delete('/:reviewId', requireAuth, async(req,res) => {
         }
     }else{
         res.statusCode = 404
-        return res.json({"message":"Review couldn't be found","statusCode":res.statusCode})
+        returnres.json({"message":"Review couldn't be found","statusCode":res.statusCode})
     }
 })
 
