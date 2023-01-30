@@ -51,12 +51,13 @@ router.get('/current', requireAuth, async (req,res) => {
         reviewz.push(review.toJSON())
     })
     for(let review of reviewz){
+        if(review.Spot){
         let previewImages = await SpotImage.findOne({where:{spotId:review.spotId}})
-        if(previewImages){
+        if(previewImages || previewImages != null){
             review.Spot.previewImage = previewImages.url
         }else{
             review.Spot.previewImage = "No preview images :("
-        }
+        }}
         
     }
     res.statusCode = 200
