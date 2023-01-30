@@ -13,12 +13,12 @@ const router = express.Router();
 // User must own the review
 // Complete
 router.delete('/:imageId', requireAuth, async(req,res) => {
-    const image = await ReviewImage.findAll({where:{id:req.params.imageId},include:[{model:Review}]})
+    const image = await ReviewImage.findByPk(req.params.imageId)
 
-    if(image[0]){
-        if(image[0].Review.userId == req.user.id){
-            delete image[0].Review
-            await image[0].destroy()
+    if(image){
+        if(image.Review.userId == req.user.id){
+            delete image.Review
+            await image.destroy()
             res.statusCode = 200
             res.json({"message":"Successfully deleted","statusCode":res.statusCode})
         }else{

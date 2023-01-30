@@ -389,7 +389,7 @@ router.get('/:spotId/bookings', requireAuth, async(req,res) => {
     }else{ // if user doesnt own the spot 
         const bookings = await Booking.findAll({ where: {spotId:req.params.spotId }, attributes: ['spotId','startDate','endDate']})
         res.statusCode = 200
-        res.json({ bookings })
+        res.json({ Bookings:bookings })
     }
    }else{ // if spot cant be found
     res.statusCode = 404
@@ -466,7 +466,7 @@ router.post('/:spotId/bookings', requireAuth, async(req,res) => {
             res.json({"message": " 'Forbidden' You own this listing. You cannot make booking for your own bookings at this time","statusCode": res.statusCode})
         }
     }else{ // Spot does not exist
-        res.statusCode = 403
+        res.statusCode = 404
         res.json({"message": "This spot does not exist","statusCode": res.statusCode})
     }
 
