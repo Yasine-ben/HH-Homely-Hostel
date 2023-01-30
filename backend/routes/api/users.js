@@ -66,7 +66,7 @@ router.post(
 
       //adds token info to res user value
       let userRes = user
-      userRes.dataValues.token = req.cookies.token.toString()
+      userRes.dataValues.token = req.cookies.token
       
 
       return res.json(userRes);
