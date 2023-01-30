@@ -74,7 +74,7 @@ router.get('/current', requireAuth, async (req,res) => {
         
     }
     res.statusCode = 200
-    res.json({Reviews:reviewz})
+    return res.json({Reviews:reviewz})
     // const spotImages = await SpotImage.findByPk(reviews.spotId, {attributes:['url']})
     // const useableReview = reviews.toJSON()
     // useableReview.previewImage = spotImages.url
@@ -92,14 +92,14 @@ router.put('/:reviewId', requireAuth, reviewValidator, async(req,res) => {
     if(updatedReview){
         if(updatedReview.userId == req.user.id){
             await updatedReview.update({review,stars})
-            res.json(updatedReview)
+            return res.json(updatedReview)
         }else{
             res.statusCode = 403
-            res.json({"message":"Forbidden","StatusCode":res.statusCode})
+            return res.json({"message":"Forbidden","StatusCode":res.statusCode})
         }
     }else{
         res.statusCode = 404
-        res.json({"message":"Review couldn't be found","StatusCode":res.statusCode})
+        return res.json({"message":"Review couldn't be found","StatusCode":res.statusCode})
     }
     
 })
@@ -117,18 +117,18 @@ router.post('/:reviewId/images', requireAuth, async(req,res) => {
             if(reviewImages.length <= 10){ //if review length is less than or equal to 10
                 const newReviewImage = await ReviewImage.create({reviewId:req.params.reviewId,url})
                 res.statusCode = 200
-                res.json(newReviewImage)
+                return res.json(newReviewImage)
             }else{//review images greater than 10
                 res.statusCode = 403
-                res.json({"message":"Maximum number of images for this resource was reached (10)","StatusCode":res.statusCode})
+                return res.json({"message":"Maximum number of images for this resource was reached (10)","StatusCode":res.statusCode})
             }
         }else{
             res.statusCode = 403
-            res.json({"message":"Forbidden","StatusCode":res.statusCode})
+            return res.json({"message":"Forbidden","StatusCode":res.statusCode})
         }
     }else{
         res.statusCode = 404
-        res.json({"message":"Review couldn't be found","StatusCode":res.statusCode})
+        return res.json({"message":"Review couldn't be found","StatusCode":res.statusCode})
     }
     
     //reviews.length
@@ -144,14 +144,14 @@ router.delete('/:reviewId', requireAuth, async(req,res) => {
         if(review.userId == req.user.id){
             await review.destroy()
             res.statusCode = 200
-            res.json({"message":"Successfully deleted","statusCode":res.statusCode})
+            return res.json({"message":"Successfully deleted","statusCode":res.statusCode})
         }else{
             res.statusCode = 403
-            res.json({"message":"Forbidden","statusCode":res.statusCode})
+            return res.json({"message":"Forbidden","statusCode":res.statusCode})
         }
     }else{
         res.statusCode = 404
-        res.json({"message":"Review couldn't be found","statusCode":res.statusCode})
+        return res.json({"message":"Review couldn't be found","statusCode":res.statusCode})
     }
 })
 
