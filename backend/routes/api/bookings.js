@@ -91,7 +91,7 @@ router.put('/:bookingId',requireAuth, async(req,res) => {
                 }
             })
 
-            const updatedBooking = await booking.update({useableStartDate,useableEndDate})
+            const updatedBooking = await booking.update({startDate:useableStartDate,endDate:useableEndDate})
             res.json(updatedBooking)
         }else{ // If user doesnt own listing
             res.statusCode = 403
