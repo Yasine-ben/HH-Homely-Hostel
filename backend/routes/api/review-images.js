@@ -14,8 +14,8 @@ const router = express.Router();
 // Complete
 router.delete('/:imageId', requireAuth, async(req,res) => {
     const image = await ReviewImage.findByPk(req.params.imageId)
-    const review = await Review.findOne({where:{id:image.reviewId}})
-    if(image && review){
+    const review = await Review.findByPk(image.reviewId)
+    if(image){
         if(review.userId == req.user.id){
             // delete image.Review
             await image.destroy()
