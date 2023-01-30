@@ -20,19 +20,19 @@ router.delete('/:bookingId',requireAuth, async(req,res) => {
         if(booking[0]){
             if(currentDate >= booking[0].startDate && currentDate <= booking[0].endDate){
             res.statusCode = 403
-            res.json({"message":"Bookings that have been started can't be deleted","statusCode":res.statusCode})
+            return res.json({"message":"Bookings that have been started can't be deleted","statusCode":res.statusCode})
         }
             if(booking[0].userId == req.user.id){
                 await booking[0].destroy()
                 res.statusCode = 200
-                res.json({"message":"Successfully deleted","statusCode":res.statusCode})
+                return res.json({"message":"Successfully deleted","statusCode":res.statusCode})
             }else{
                 res.statusCode = 403
-                res.json({"message":"Forbidden","statusCode":res.statusCode})
+                return res.json({"message":"Forbidden","statusCode":res.statusCode})
             }
         }else{
             res.statusCode = 404
-            res.json({"message":"Booking couldn't be found","statusCode":res.statusCode})
+            return res.json({"message":"Booking couldn't be found","statusCode":res.statusCode})
         }
 })
 
