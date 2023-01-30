@@ -15,12 +15,13 @@ const router = express.Router();
 router.delete('/:bookingId',requireAuth, async(req,res) => {
     const booking = await Booking.findAll({where:{id:req.params.bookingId}})
     const currentDate = new Date(Date.now())
-    if(currentDate >= booking[0].startDate && currentDate <= booking[0].endDate){
-        res.statusCode = 403
-        res.json({"message":"Bookings that have been started can't be deleted","statusCode":res.statusCode})
-    }
+        
         //res.json(booking)
         if(booking[0]){
+            if(currentDate >= booking[0].startDate && currentDate <= booking[0].endDate){
+            res.statusCode = 403
+            res.json({"message":"Bookings that have been started can't be deleted","statusCode":res.statusCode})
+        }
             if(booking[0].userId == req.user.id){
                 await booking[0].destroy()
                 res.statusCode = 200
