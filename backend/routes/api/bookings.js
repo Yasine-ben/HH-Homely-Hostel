@@ -14,6 +14,11 @@ const router = express.Router();
 // Complete
 router.delete('/:bookingId',requireAuth, async(req,res) => {
     const booking = await Booking.findAll({where:{id:req.params.bookingId}})
+    const currentDate = new Date(Date.now())
+    if(currentDate >= booking[0].startDate && currentDate <= booking[0].endDate){
+        res.statusCode = 403
+        res.json({"message":"Bookings that have been started can't be deleted","statusCode":res.statusCode})
+    }
         //res.json(booking)
         if(booking[0]){
             if(booking[0].userId == req.user.id){
@@ -90,7 +95,7 @@ router.put('/:bookingId',requireAuth, async(req,res) => {
                       })
                 }
             })
-
+            
             const updatedBooking = await booking.update({startDate:useableStartDate,endDate:useableEndDate})
             res.json(updatedBooking)
         }else{ // If user doesnt own listing
