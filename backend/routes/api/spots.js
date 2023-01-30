@@ -206,7 +206,7 @@ router.get('/', async (req,res) => {
     AverageReviewCalc()
     SpotImageCheck()
     
-    res.json({"spots":spots,"page":page,"size":size})
+    res.json({"Spots":spots,"page":page,"size":size})
 })
 
 // Create a spot
@@ -319,7 +319,7 @@ router.get('/:spotId',async(req,res) => {
         })
         if(!(len === 0)) {
             useableSpot.numReviews = len
-            useableSpot.avgStarRating = (total/len).toFixed(1)
+            useableSpot.avgStarRating = parseInt((total/len).toFixed(1))
         }else{
             useableSpot.numReviews = len
             useableSpot.avgStarRating = "not enough reviews have been submitted"
