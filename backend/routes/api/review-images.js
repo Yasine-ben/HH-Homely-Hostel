@@ -20,7 +20,7 @@ router.delete('/:imageId', requireAuth, async(req,res) => {
     }
 
     const review = await Review.findByPk(image.reviewId)
-    if(req.user.id !== review.userid){
+    if(req.user.id !== review.userId){
         res.statusCode = 403
         res.json({"message":"Forbidden","statusCode":res.statusCode})
     }
