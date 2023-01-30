@@ -54,7 +54,8 @@ router.put('/:bookingId',requireAuth, async(req,res) => {
     useableEndDate = new Date(endDate)
 
     //res.json({currentDate,useableStartDate,useableEndDate})
-    if(booking){
+    if(booking.length){ //added .length to see if that fixes error 
+        
         if(booking.userId === req.user.id){ // If user owns Booking
 
             if(useableStartDate>=useableEndDate){ // Start date cannot come after end date
