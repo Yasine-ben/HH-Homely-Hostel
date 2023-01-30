@@ -36,8 +36,7 @@ router.get('/current', requireAuth, async (req,res) => {
             attributes:['id','firstName','lastName']
         },
         {
-            model:Spot,
-            attributes:['id','ownerId','address','city','state','country','lat','lng','name','price'],
+            model:Spot
         },
         {
             model:ReviewImage,
@@ -55,8 +54,14 @@ router.get('/current', requireAuth, async (req,res) => {
         let previewImages = await SpotImage.findOne({where:{spotId:review.spotId}})
         if(previewImages || previewImages != null){
             review.Spot.previewImage = previewImages.url
+            delete review.Spot.description
+            delete review.Spot.createdAt
+            delete review.Spot.updatedAt
         }else{
             review.Spot.previewImage = "No preview images :("
+            delete review.Spot.description
+            delete review.Spot.createdAt
+            delete review.Spot.updatedAt
         }}
         
     }
