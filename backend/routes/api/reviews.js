@@ -80,8 +80,8 @@ router.put('/:reviewId', requireAuth, reviewValidator, async(req,res) => {
             await updatedReview.update({review,stars})
             res.json(updatedReview)
         }else{
-            res.statusCode = 404
-            res.json({"message":"You do not own this review","StatusCode":res.statusCode})
+            res.statusCode = 403
+            res.json({"message":"Forbidden","StatusCode":res.statusCode})
         }
     }else{
         res.statusCode = 404
@@ -109,8 +109,8 @@ router.post('/:reviewId/images', requireAuth, async(req,res) => {
                 res.json({"message":"Maximum number of images for this resource was reached (10)","StatusCode":res.statusCode})
             }
         }else{
-            res.statusCode = 404
-            res.json({"message":"You do not own this review","StatusCode":res.statusCode})
+            res.statusCode = 403
+            res.json({"message":"Forbidden","StatusCode":res.statusCode})
         }
     }else{
         res.statusCode = 404
@@ -132,8 +132,8 @@ router.delete('/:reviewId', requireAuth, async(req,res) => {
             res.statusCode = 200
             res.json({"message":"Successfully deleted","statusCode":res.statusCode})
         }else{
-            res.statusCode = 404
-            res.json({"message":"You do not own this review","statusCode":res.statusCode})
+            res.statusCode = 403
+            res.json({"message":"Forbidden","statusCode":res.statusCode})
         }
     }else{
         res.statusCode = 404

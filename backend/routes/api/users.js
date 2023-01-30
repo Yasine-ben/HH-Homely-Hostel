@@ -66,16 +66,13 @@ router.post(
 
       //adds token info to res user value
       let userRes = user
-      userRes.dataValues.token = req.cookies.token.toString()
-      //console.log(userRes)
+      userRes.dataValues.token = req.cookies.token
+      
 
       return res.json(userRes);
     }
   );
 
-  // app.use((err, req, res, next) => {
-  //   console.error(err.stack)
-  //   res.status(401).send(err)
-  // })
+
 
 module.exports = router;
