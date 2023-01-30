@@ -51,7 +51,7 @@ router.get('/current', requireAuth, async (req,res) => {
         reviewz.push(review.toJSON())
     })
     for(let review of reviewz){
-        let previewImages = await SpotImage.findOne({where:{[Op.and]:[{spotId:review.Spot.id},{preview:true}]}})
+        let previewImages = await SpotImage.findByPk(review.Spot.id)
         if(previewImages){
             review.Spot.previewImage = previewImages.url
         }else{
