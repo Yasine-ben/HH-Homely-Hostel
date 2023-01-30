@@ -13,36 +13,25 @@ const router = express.Router();
 // User must own the review
 // Complete
 router.delete('/:imageId', requireAuth, async(req,res) => {
-    const reviewImage = await ReviewImage.findOne({
-        where: {
-            id: req.params.id
-        },
-        include: [{
-            model: Spot,
-            where: { ownerId: req.user.id}
-        }]
+    const reviewImage = await ReviewImage.findByPk(req.params.imageId, {
+        include: [{ model: Review }]
     });
-
-    console.log(reviewImage)
-
-    if (!reviewImage) {
-        res.json({
-            message: "Review Image couldn't be found",
-            statusCode: 404
-        })
-        res.status(404);
-        return ;
-    }
-
-    await reviewImage.destroy();
     
-    res.json({
-        message: "Successfully deleted.",
-        statusCode: 200
+    if (!reviewImage) {
+        res.statusCode = 404
+        res.json({"message":"Review Image couldn't be found","statusCode":res.statusCode})
+    } else if (reviewImage.Review.userId !== req.user.id) {
+        res.statusCode = 403
+        res.json({"message":"Forbidden","statusCode":res.statusCode})
+    } else {
+        await reviewImage.destroy();
+        res.json({
+            message: "Successfully deleted",
+            statusCode: 200
+            });
+        }
+        
     })
-    res.status(200);
-    return;
-});
     // const image = await ReviewImage.findByPk(req.params.imageId)
     // if(!image){
     //     res.statusCode = 404
