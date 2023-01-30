@@ -385,7 +385,7 @@ router.get('/:spotId/bookings', requireAuth, async(req,res) => {
     if(spot.ownerId === req.user.id){ // if user owns the spot
         const bookings = await Booking.findAll({ where:{spotId:req.params.spotId},include:{model:User} })
         res.statusCode = 200
-        res.json({bookings})
+        res.json({Bookings:bookings})
     }else{ // if user doesnt own the spot 
         const bookings = await Booking.findAll({ where: {spotId:req.params.spotId }, attributes: ['spotId','startDate','endDate']})
         res.statusCode = 200
