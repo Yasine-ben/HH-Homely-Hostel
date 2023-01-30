@@ -161,7 +161,10 @@ router.get('/', async (req,res) => {
         model: Review
     },
     {
-        model:SpotImage
+        // model:SpotImage
+        as: 'previewImage',
+        model: SpotImage,
+        attributes: ['url']
     }    
     ],
     limit:limit,
