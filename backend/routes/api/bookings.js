@@ -59,7 +59,7 @@ router.put('/:bookingId',requireAuth, async(req,res) => {
 
             if(useableStartDate>=useableEndDate){ // Start date cannot come after end date
                 res.statusCode = 400
-                res.json({
+                return res.json({
                     "message": "Validation error",
                     "statusCode": res.statusCode,
                     "errors": {
@@ -69,7 +69,7 @@ router.put('/:bookingId',requireAuth, async(req,res) => {
             }
             if(useableEndDate<currentDate){ // Cannot modify past bookings
                 res.statusCode = 403
-                res.json({
+                return res.json({
                     "message": "Past bookings can't be modified",
                     "statusCode": res.statusCode
                 })
@@ -77,7 +77,7 @@ router.put('/:bookingId',requireAuth, async(req,res) => {
             spotDates.forEach(date => {
                 if((date.startDate <= useableStartDate && date.endDate >= useableStartDate)){
                     res.statusCode = 403
-                    res.json({
+                    return res.json({
                         "message": "Sorry, this spot is already booked for the specified dates",
                         "statusCode": res.statusCode,
                         "errors": {
@@ -87,7 +87,7 @@ router.put('/:bookingId',requireAuth, async(req,res) => {
                 }
                 if((date.startDate <= useableEndDate && date.endDate >= useableEndDate)){
                     res.statusCode = 403
-                    res.json({
+                    return res.json({
                         "message": "Sorry, this spot is already booked for the specified dates",
                         "statusCode": res.statusCode,
                         "errors": {
@@ -98,14 +98,14 @@ router.put('/:bookingId',requireAuth, async(req,res) => {
             })
             
             const updatedBooking = await booking.update({startDate:useableStartDate,endDate:useableEndDate})
-            res.json(updatedBooking)
+            return res.json(updatedBooking)
         }else{ // If user doesnt own listing
             res.statusCode = 403
-            res.json({"message": "Forbidden","statusCode": res.statusCode})
+            return res.json({"message": "Forbidden","statusCode": res.statusCode})
         }
     }else{// If booking doesnt exist
         res.statusCode = 404
-        res.json({"message": "Booking couldn't be found","statusCode": res.statusCode})
+        return res.json({"message": "Booking couldn't be found","statusCode": res.statusCode})
     }
 })
 
@@ -136,7 +136,7 @@ router.get('/current', requireAuth, async(req,res) => {
         }
     }
     res.statusCode = 200
-    res.json({Bookings:bookings})
+    return res.json({Bookings:bookings})
 })
 
 
