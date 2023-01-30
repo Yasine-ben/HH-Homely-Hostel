@@ -13,21 +13,51 @@ const router = express.Router();
 // User must own the review
 // Complete
 router.delete('/:imageId', requireAuth, async(req,res) => {
-    const image = await ReviewImage.findByPk(req.params.imageId)
-    if(!image){
-        res.statusCode = 404
-        res.json({"message":"Review Image couldn't be found","statusCode":res.statusCode})
+    const reviewImage = await ReviewImage.findOne({
+        where: {
+            id: req.params.id
+        },
+        include: [{
+            model: Spot,
+            where: { ownerId: req.user.id}
+        }]
+    });
+
+    console.log(reviewImage)
+
+    if (!reviewImage) {
+        res.json({
+            message: "Review Image couldn't be found",
+            statusCode: 404
+        })
+        res.status(404);
+        return ;
     }
 
-    const review = await Review.findByPk(image.reviewId)
-    if(req.user.id !== review.userId){
-        res.statusCode = 403
-        res.json({"message":"Forbidden","statusCode":res.statusCode})
-    }
+    await reviewImage.destroy();
+    
+    res.json({
+        message: "Successfully deleted.",
+        statusCode: 200
+    })
+    res.status(200);
+    return;
+});
+    // const image = await ReviewImage.findByPk(req.params.imageId)
+    // if(!image){
+    //     res.statusCode = 404
+    //     res.json({"message":"Review Image couldn't be found","statusCode":res.statusCode})
+    // }
 
-    await image.destroy()
-    res.statusCode = 200
-    res.json({"message":"Successfully deleted","statusCode":res.statusCode})
+    // const review = await Review.findByPk(image.reviewId)
+    // if(req.user.id !== review.userId){
+    //     res.statusCode = 403
+    //     res.json({"message":"Forbidden","statusCode":res.statusCode})
+    // }
+
+    // await image.destroy()
+    // res.statusCode = 200
+    // res.json({"message":"Successfully deleted","statusCode":res.statusCode})
     // if(image){
     //     const review = await Review.findByPk(image.reviewId)
     //     if(review){
@@ -48,7 +78,7 @@ router.delete('/:imageId', requireAuth, async(req,res) => {
     //     res.statusCode = 404
     //     res.json({"message":"Review Image couldn't be found","statusCode":res.statusCode})
     // }
-})
+//})
 
 
 

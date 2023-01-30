@@ -20,12 +20,12 @@ module.exports = (sequelize, DataTypes) => {
     spotId: {
       type:DataTypes.INTEGER,
       // references:{model:"Spots",key:'id'},
-      // allowNull:false,
+      allowNull:false,
       // onDelete:"CASCADE"
   },
     userId: {
       type:DataTypes.INTEGER,
-      // allowNull:false,
+      allowNull:false,
       // references:{model:"Users",key:'id'},
       // onDelete:"CASCADE"
     },
