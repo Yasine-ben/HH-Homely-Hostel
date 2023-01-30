@@ -2,7 +2,7 @@
 const bcrypt = require("bcryptjs");
 const {seedUsers} = require('../../utils/fakerSeed.js') //importing fake seeds
 let options = {};
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in options object
 }
 //let users = seedUsers(100) //
