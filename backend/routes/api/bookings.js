@@ -46,7 +46,7 @@ router.put('/:bookingId',requireAuth, async(req,res) => {
         where:{id:req.params.bookingId}
     })
     let spotDates
-    if(booking){
+    if(booking[0]){
     spotDates = await Booking.findAll({where:{spotId:booking[0].spotId},attributes:['id','startDate','endDate']})
     }
     // res.json(spotStartDates)
@@ -57,7 +57,7 @@ router.put('/:bookingId',requireAuth, async(req,res) => {
     useableEndDate = new Date(endDate)
     
     //res.json({currentDate,useableStartDate,useableEndDate})
-    if(booking[0].length){ //added .length to see if that fixes error 
+    if(booking[0]){ //added .length to see if that fixes error 
         
         if(booking[0].userId === req.user.id){ // If user owns Booking
 
