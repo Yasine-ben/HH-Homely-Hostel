@@ -60,9 +60,6 @@ module.exports = (sequelize, DataTypes) => {
     name: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        len: [3, 100] //bob is the shortest name right? 
-      }
     },
     description: {
       type: DataTypes.STRING,
