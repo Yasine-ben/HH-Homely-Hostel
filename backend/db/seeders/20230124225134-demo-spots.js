@@ -30,7 +30,7 @@ module.exports = {
         lat: '65.8858',
         lng: '31.3470',
         name: 'Cute+Cozy newly renovated schoolhouse turned bnb',
-        description: 'Cozy 1-bed 1/2-bath bnb perfect for you and your Significant other.', //Ammentites include large yard (to play amongus irl),retro school desks,tree,4 windows :)!',
+        description: 'Cozy 1-bed 1/2-bath bnb perfect for you and your Significant other. Ammentites include large yard (to play amongus irl),retro school desks,tree,4 windows :)!',
         price: '82.00'
       },
       {
@@ -42,7 +42,7 @@ module.exports = {
         lat: '-13.6323',
         lng: '92.1882',
         name: 'White A-Frame festival house',
-        description: 'Recently renovated A-Frame House. Renovated due to prior book-ees arson. ', //Red stains on the floors and walls from. . . paint accident. Huge field free use you and your friends to dance and party. Many other small outhouses available as well for extra addon(please inquire for more information)
+        description: 'Recently renovated A-Frame House. Renovated due to prior book-ees arson.  Red stains on the floors and walls from. . . paint accident. Huge field free use you and your friends to dance and party. Many other small outhouses available as well for extra addon(please inquire for more information)',
         price: '999.00'
       },
       {
@@ -54,7 +54,7 @@ module.exports = {
         lat: '-71.0692',
         lng: '-44.1019',
         name: 'Gigantic decomissioned hotel turned party mansion',
-        description: 'Massive Decomission hotel due to past "spooky events" for you and your friends to enjoy.',// In the middle of no where so no one can her YOU SCREAM
+        description: 'Massive Decomission hotel due to past "spooky events" for you and your friends to enjoy. In the middle of no where so no one can her YOU SCREAM',
         price: '2912.00'
       },
       {
