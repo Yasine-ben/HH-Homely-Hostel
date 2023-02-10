@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       references:{model:"Spots", key:'id'},
     },
     url: {
-      type:DataTypes.STRING
+      type:DataTypes.TEXT
     },
     preview: {
       type:DataTypes.BOOLEAN
