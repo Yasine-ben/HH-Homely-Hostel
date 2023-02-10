@@ -41,11 +41,11 @@ module.exports = {
           allowNull:false
         },
         name: {
-          type: Sequelize.STRING,
+          type: Sequelize.STRING(200),
           allowNull:false
         },
         description: {
-          type: Sequelize.STRING,
+          type: Sequelize.STRING(500),
           allowNull:false
         },
         price: {
