@@ -1,4 +1,4 @@
-# AirBnB Clone
+# Homely Hostel :)
 
 ## Database Schema Design
 
