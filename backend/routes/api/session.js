@@ -62,12 +62,10 @@ router.get('/', restoreUser,(req, res) => {
       const { user } = req;
 
       if (user) {
-        console.log("if")
         return res.json({user: user});
       } 
 
       else {
-        console.log("else")
         return res.json({ user : null });
       };
     }
