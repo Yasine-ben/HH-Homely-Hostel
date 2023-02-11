@@ -58,23 +58,17 @@ router.delete(
 );
   
 // Restore session user
-router.get(
-    '/',
-    restoreUser,
-    (req, res) => {
+router.get('/', restoreUser,(req, res) => {
       const { user } = req;
+
       if (user) {
-        return res.json({
-          user: user
-        });
-      } else {
-        res.statusCode = 204
+        console.log("if")
+        return res.json({user: user});
+      } 
+
+      else {
+        console.log("else")
         return res.json({ user : null });
-        // res.statusCode = 401
-        // res.json({
-        //   "message": "Authentication required",
-        //   "statusCode": res.statusCode
-        // })
       };
     }
 );
