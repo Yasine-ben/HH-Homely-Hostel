@@ -69,7 +69,7 @@ router.post(
       userRes.dataValues.token = req.cookies.token
       
 
-      return res.json(userRes);
+      return res.json({user:userRes});
     }
   );
 
