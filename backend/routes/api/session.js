@@ -69,7 +69,7 @@ router.get(
         });
       } else {
         res.statusCode = 204
-        res.json({"user":null})
+        return res.json({ user : null });
         // res.statusCode = 401
         // res.json({
         //   "message": "Authentication required",
