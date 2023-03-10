@@ -96,7 +96,7 @@
     font-size: 1em;
     color:#162938;
     font-weight: 500;
-    cursor: pointer;
+    cursor:not-allowed;
   }
   #modal-content .btn:enabled{
     width: 100%;
