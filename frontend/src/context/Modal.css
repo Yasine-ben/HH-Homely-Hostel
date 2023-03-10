@@ -18,10 +18,10 @@
     /* background-color: rgba(0, 0, 0, 0.7); */
   }
   
-  #modal-content .wrapper {
+  #modal-content .wrapper-login {
     position: relative;
-    width: 350px;
-    height: 340px;
+    width: 500px;
+    height: fit-content;
     background-color: #fff;
     border: 2px solid rgba(255, 255, 255, .5);
     border-radius: 20px;
@@ -30,10 +30,27 @@
     align-items: center;
     /* background-color:white; */
   }
-  #modal-content .wrapper .form-box-login{
+  #modal-content .wrapper-signUp {
+    position: relative;
+    width: 400px;
+    height: fit-content;
+    background-color: #fff;
+    border: 2px solid rgba(255, 255, 255, .5);
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background-color:white; */
+  }
+  #modal-content .wrapper-login .form-box{
     width: 100%;
     padding: 40px;
   }
+  #modal-content .wrapper-signUp .form-box{
+    width: 100%;
+    padding: 40px;
+  }
+  
 
   #modal-content h2{
     font-size: 2em;
@@ -125,9 +142,12 @@
   }
 
   #modal-content .errors{
+    margin-top: 2px;
     position: relative;
+    display: grid;
     color: red;
-    font-size: .8em;
+    font-size: 1em;
     justify-content: center;
     align-items: center;
+    text-align: center;
   }

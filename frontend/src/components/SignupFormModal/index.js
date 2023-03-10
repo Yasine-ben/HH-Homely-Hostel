@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import * as sessionActions from "../../store/session";
@@ -29,16 +29,31 @@ function SignupFormModal() {
     return setErrors(['Confirm Password field must be the same as the Password field']);
   };
 
+  useEffect(() => { //input error checker/filer
+    let e = []
+
+    if(!email.length||!username.length||!firstName.length||!lastName.length||!password.length||!confirmPassword.length){ 
+      e.push('All fields must be filled') //empty fields validator
+    } if(password !== confirmPassword){ //password / confirm password matching validator
+      e.push('Passwords must match')
+    }if(username.length < 4){
+      e.push("Username must be longer than 4 characters")
+    }if(password.length < 6){
+      e.push("Password must be greater than 6 characters")
+    }
+
+    setErrors(e)
+  },[email,username,password,firstName,lastName,password,confirmPassword])
+
   return (
-    <div className="wrapper">
+    <div className="wrapper-signUp">
       <div className="form-box signUp">
-        <h1>Sign Up</h1>
+        <h2>Sign Up</h2>
         <form onSubmit={handleSubmit}>
-          <div className="input-box">
-            <ul>
-              {errors.map((error, idx) => <li key={idx}>{error}</li>)}
-            </ul>
-            <label>
+            <p className="errors">
+              {errors.map((error, idx) => <p key={idx}>{error}</p>)}
+            </p>
+            <div className="input-box">
               <input
                 type="text"
                 value={email}
@@ -46,8 +61,8 @@ function SignupFormModal() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
               />
-            </label>
-            <label>
+            </div>
+            <div className="input-box">
               <input
                 type="text"
                 value={username}
@@ -55,8 +70,8 @@ function SignupFormModal() {
                 onChange={(e) => setUsername(e.target.value)}
                 required
               />
-            </label>
-            <label>
+            </div>
+            <div className="input-box">
               <input
                 type="text"
                 value={firstName}
@@ -64,8 +79,8 @@ function SignupFormModal() {
                 onChange={(e) => setFirstName(e.target.value)}
                 required
               />
-            </label>
-            <label>
+            </div>
+            <div className="input-box">
               <input
                 type="text"
                 value={lastName}
@@ -73,8 +88,8 @@ function SignupFormModal() {
                 onChange={(e) => setLastName(e.target.value)}
                 required
               />
-            </label>
-            <label>
+            </div>
+            <div className="input-box">
               <input
                 type="password"
                 value={password}
@@ -82,18 +97,21 @@ function SignupFormModal() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
-            </label>
-            <label>
+            </div>
+            <div className="input-box">
               <input
                 type="password"
                 value={confirmPassword}
-                placeholder="password"
+                placeholder="confirm password"
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
               />
-            </label>
-            <button type="submit">Sign Up</button>
-          </div>
+            </div>
+            <button 
+              className="btn" 
+              type="submit"
+              disabled={errors.length ? true:false}
+            >Sign Up</button>
         </form>
       </div>
     </div>

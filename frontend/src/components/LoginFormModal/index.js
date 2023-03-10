@@ -36,7 +36,7 @@ function LoginFormModal() {
     if(password.length < 6){
       e.push("There must be at least 6 characters in your password")
     }
-    
+
     setErrors(e)
   },[credential,password])
 
@@ -49,29 +49,47 @@ function LoginFormModal() {
     if(!eyeOpen)setEyeOpen(true) 
     else setEyeOpen(false)
   }
-  console.log("errors.length",errors)
+  //console.log("errors.length",errors)
 
 
   return (
-    <div className="wrapper">
-      <div className="form-box-login">
+    <div className="wrapper-login">
+      <div className="form-box login">
         <h2>Log In</h2>
         <form onSubmit={handleSubmit}>
           <div className="input-box">
-            {/* <p className="errors">
+            <p className="errors">
               {errors.map((error, idx) => (
                 <p key={idx}>{error}</p>
               ))}
-            </p> */} 
-            {/* removed (not sure if the errors for the inputs are required) */}
+            </p>  
             <div className="input-box">
-              <i id="icon" class="fa-solid fa-envelope"></i>
-              <input type="text" placeholder="username or email" value={credential}  onChange={(e) => setCredential(e.target.value)} required />
+              <i 
+                id="icon" 
+                class="fa-solid fa-envelope"
+              ></i>
+              <input 
+                type="text" 
+                placeholder="username or email" 
+                value={credential}  
+                onChange={(e) => setCredential(e.target.value)} 
+                required 
+              />
             </div>
             <div className="input-box" for='passwordInput'>
-              {/* <i id="icon" class="fa-solid fa-lock"></i> */}
-              <input type="password" placeholder="password" value={password} id="passwordInput" onChange={(e) => setPassword(e.target.value)} required/>
-              <i id='icon' class={eyeOpen ? 'fa-sharp fa-solid fa-eye':'fa-solid fa-eye-slash' } onClick={() => showPasswordFunc()}></i>
+              <input 
+                type="password" 
+                placeholder="password" 
+                value={password} 
+                id="passwordInput" 
+                onChange={(e) => setPassword(e.target.value)} 
+                required
+              />
+              <i 
+                id='icon' 
+                class={eyeOpen ? 'fa-sharp fa-solid fa-eye':'fa-solid fa-eye-slash' } 
+                onClick={() => showPasswordFunc()}
+              ></i>
             </div>
           </div>
           <div className="bottom-area">
@@ -79,11 +97,23 @@ function LoginFormModal() {
               className="btn" 
               type="submit"
               disabled={errors.length ? true:false}
-            >Log In
-            
+              >Log In
             </button>
             <div className="login-register"> <p> Don't have an account? <Link className="register-link" to='/'>Register </Link> </p> </div>
-            <div className="demo-user-login"> <Link className="demo-link" to="/">Demo User</Link> </div>
+            <div className="demo-user-login"> 
+              <Link 
+              className="demo-link" 
+              onClick={(() => ( //Come back to this closeModal isnt working
+                // setCredential('demo_user123'),
+                // setPassword('password'),
+                dispatch(sessionActions.login({ credential:'demo_user123', password:'password' })),
+                closeModal
+              ))
+              
+              }
+              >Demo User
+              </Link> 
+            </div>
           </div>
         </form>
       </div>
