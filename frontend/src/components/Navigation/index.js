@@ -5,6 +5,8 @@ import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
 import './Navigation.css';
 import logo from "../assets/logo.png"
+// import Dropdown from 'react-bootstrap/Dropdown';
+// import DropdownButton from 'react-bootstrap/DropdownButton';
 
 function Navigation({ isLoaded }){
   const sessionUser = useSelector(state => state.session.user);
@@ -19,9 +21,13 @@ function Navigation({ isLoaded }){
           <NavLink class="nav-link" to="/">Link-3</NavLink>
           
         </nav>
-        <buttons>
-          {isLoaded && (<ProfileButton classname="profile-btn" user={sessionUser} />)}
-        </buttons>
+        
+          {/* <DropdownButton title='Dropdown button'>
+            <Dropdown.ItemText>item</Dropdown.ItemText>
+          </DropdownButton> */}
+          <buttons>
+            {isLoaded && (<ProfileButton classname="profile-btn" user={sessionUser} />)}
+          </buttons>
       </div>
     
     </>

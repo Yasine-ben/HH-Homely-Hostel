@@ -15,10 +15,119 @@
     right: 0;
     left: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.7);
+    /* background-color: rgba(0, 0, 0, 0.7); */
   }
   
-  #modal-content {
+  #modal-content .wrapper {
+    position: relative;
+    width: 350px;
+    height: 340px;
+    background-color: #fff;
+    border: 2px solid rgba(255, 255, 255, .5);
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background-color:white; */
+  }
+  #modal-content .wrapper .form-box-login{
+    width: 100%;
+    padding: 40px;
+  }
+
+  #modal-content h2{
+    font-size: 2em;
+    color: #162938;
+    text-align: center;
+  }
+
+  #modal-content input{
+    width: 100%;
+    top: 50%;
+    background: lightblue;
+    border-radius: 4px;
+    padding: 5px;
+    outline: 20px;
+  }
+  #modal-content input::placeholder{
+    color: #162938;
+    font-weight: 600;
+    font-size: 1em;
+  }
+
+  #modal-content .input-box{
+    position: relative;
+    width: 100%;
+    margin: 20px 0;
+  }
+  #modal-content .input-box #icon{
     position: absolute;
-    background-color:white;
+    right: 10px;
+    font-size: 1.0em;
+    color: #162938;
+    line-height: 20px;
+    margin-top: 5px;
+  }
+
+  #modal-content .btn:disabled{
+    width: 100%;
+    height: 45px;
+    background: #fff;
+    outline: 40px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    font-size: 1em;
+    color:#162938;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  #modal-content .btn:enabled{
+    width: 100%;
+    height: 45px;
+    background: rgb(245, 71, 71);
+    outline: 40px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    font-size: 1em;
+    color:#162938;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  #modal-content .login-register p{
+    color: #162938;
+    font-weight: 400;
+    font-size: 1em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #modal-content .register-link{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 5px;
+    text-decoration: underline;
+    color: #3b859d;
+  }
+
+  #modal-content .demo-link{
+    position: relative;
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #3b859d;
+    font-size: 1.2em;
+    font-weight: 500;
+    text-decoration: underline;
+  }
+
+  #modal-content .errors{
+    position: relative;
+    color: red;
+    font-size: .8em;
+    justify-content: center;
+    align-items: center;
   }
