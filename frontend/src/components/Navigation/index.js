@@ -17,7 +17,7 @@ function Navigation({ isLoaded }){
       <header className='header-main'>
 
         <NavLink className="header-main-logo" exact to="/"> 
-          <img src={logo} alt="logo" /> 
+          <img src={logo} alt="logo" height="140px" /> 
         </NavLink>
 
         <div className='header-main-link'>
