@@ -5,81 +5,64 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+body{
+  background-color: #37B363;
+}
+
+.header-main {
+  width: 100%;
+  height: 50px;
+  background-color: ;
+  display: flex;
+  justify-content:space-between;
+  position: absolute;
+  border-bottom: 2px #53CA7D solid;
+}
+
+
+
+.header-main-link {
+  background-color: #E7F6B5;
+  margin:1rem auto;
   
 }
 
-.header{
-  position: fixed;
-  top:0;
-  left:0;
-  width:100%;
-  padding: 20px 80px;
-  background-color: red;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  z-index:99;
+.header-main-logo {
+
 }
 
-.navigation .nav-link  {
-  position: relative;
-  font-size:1.1em;
-  color:#fff;
-  text-decoration: none;
-  font-weight: 500;
-  margin-left: 40px;
-  transform: scaleX(0);
-}
-
-.navigation .nav-link:after {
-  content:"";
+.header-main .header-main-logo img {
+  height: 140px;
   position: absolute;
-  left:0;
-  bottom:-6px;
-  width:100%;
-  height:3px;
-  background:#fff;
-  border-radius: 5px;
-  transform-origin: right;
-  transform: scaleX(0);
-  transition: transform .5s;
+  top:-45px;
 }
 
-.navigation .nav-link:hover:after {
-  transform-origin: left;
-  transform: scaleX(1);
+/* 
+
+colors
+-mainColor #37B363
+-secondaryColor #E7F6B5
+-outlines/borders #53CA7D
+*/
+
+
+
+.header-profile-btn {
+  background-color: #E7F6B5;
+  margin: .4rem;
+  padding: 7px 18px;
+  border-radius: 20px;
+  border: 3px solid #53CA7D;
+  position: absolute;
+  right:1%
 }
 
-buttons button,.profile-btn-dropdown{
-  position: relative;
-  width: 100%;
-  height: 50px;
-  background: transparent;
-  border: 2px solid #fff;
-  outline: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 500;
-  margin-left: 40px;
-  margin-right: 40px;
-  transition: .5s;
+.profile-btn-grp i+img{
+  margin-left: 8px;
 }
 
-buttons button:hover{
-  background-color: #fff;
-  color: #162938;
-}
-
-buttons .profile-btn-dropdown{
- background-color: white;
-
-}
-
-.profile-btn-dropdown:hover{
-  color: white;
-  transition: .3s;
-}
-
-OpenModalMenuItem{
-  border-radius: 5%;
+.menu{
+  display: grid;
 }

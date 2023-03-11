@@ -4,32 +4,32 @@ import { Link, NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
 import './Navigation.css';
-import logo from "../assets/logo.png"
-// import Dropdown from 'react-bootstrap/Dropdown';
-// import DropdownButton from 'react-bootstrap/DropdownButton';
+import logo from "../assets/logo-new.png"
+
+
+
 
 function Navigation({ isLoaded }){
   const sessionUser = useSelector(state => state.session.user);
 
   return (
     <>
-      <div className="header">
-        <NavLink ClassName="logo" exact to="/"> <img src={logo} height="50" width="50"/> </NavLink>
-        <nav className="navigation">
-          <NavLink class="nav-link" to="/">Link-1</NavLink>
-          <NavLink class="nav-link" to="/">Link-2</NavLink>
-          <NavLink class="nav-link" to="/">Link-3</NavLink>
-          
-        </nav>
+      <header className='header-main'>
+
+        <NavLink className="header-main-logo" exact to="/"> 
+          <img src={logo} alt="logo" /> 
+        </NavLink>
+
+        <div className='header-main-link'>
+        {sessionUser ? (<NavLink to="/">Create a New Spot</NavLink>) : 
+                       (<NavLink to="/">No user logged in</NavLink>)}
+        </div>
         
-          {/* <DropdownButton title='Dropdown button'>
-            <Dropdown.ItemText>item</Dropdown.ItemText>
-          </DropdownButton> */}
-          <buttons>
-            {isLoaded && (<ProfileButton classname="profile-btn" user={sessionUser} />)}
-          </buttons>
-      </div>
-    
+        <div className='header-profile-btn'>
+          {isLoaded && (<ProfileButton  user={sessionUser} />)}
+        </div>
+      
+      </header>
     </>
   );
 }
