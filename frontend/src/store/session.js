@@ -15,7 +15,7 @@ const removeUser = () => {
   return {
     type: REMOVE_USER,
   };
-};
+}; 
 
 export const login = (user) => async (dispatch) => {
   const { credential, password } = user;

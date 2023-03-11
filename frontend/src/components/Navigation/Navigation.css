@@ -1,3 +1,68 @@
 .hidden {
   display: none;
 }
+*{  /* universal "applies to everything everything"  */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body{
+  background-color: #37B363;
+}
+
+.header-main {
+  width: 100%;
+  height: 50px;
+  background-color: ;
+  display: flex;
+  justify-content:space-between;
+  position: absolute;
+  border-bottom: 2px #53CA7D solid;
+}
+
+
+
+.header-main-link {
+  background-color: #E7F6B5;
+  margin:1rem auto;
+  
+}
+
+.header-main-logo {
+
+}
+
+.header-main .header-main-logo img {
+  height: 140px;
+  position: absolute;
+  top:-45px;
+}
+
+/* 
+
+colors
+-mainColor #37B363
+-secondaryColor #E7F6B5
+-outlines/borders #53CA7D
+*/
+
+
+
+.header-profile-btn {
+  background-color: #E7F6B5;
+  margin: .4rem;
+  padding: 7px 18px;
+  border-radius: 20px;
+  border: 3px solid #53CA7D;
+  position: absolute;
+  right:1%
+}
+
+.profile-btn-grp i+img{
+  margin-left: 8px;
+}
+
+.menu{
+  display: grid;
+}
