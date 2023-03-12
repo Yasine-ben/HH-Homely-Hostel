@@ -20,14 +20,21 @@ function Navigation({ isLoaded }){
           <img src={logo} alt="logo" height="140px" /> 
         </NavLink>
 
-        <div className='header-main-link'>
-        {sessionUser ? (<NavLink to="/">Create a New Spot</NavLink>) : 
-                       (<NavLink to="/">No user logged in</NavLink>)}
+        
+        <div className='header-top-right'>
+
+
+          <div className='header-main-link'>
+        {sessionUser ? (<NavLink to="/">Create a New Spot</NavLink>)  
+                     : (<NavLink to="/">No user logged in</NavLink>)}
+          </div>
+
+          <div className='header-profile-btn'>
+            {isLoaded && (<ProfileButton  user={sessionUser} />)}
+          </div>
+
         </div>
         
-        <div className='header-profile-btn'>
-          {isLoaded && (<ProfileButton  user={sessionUser} />)}
-        </div>
       
       </header>
     </>

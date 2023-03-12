@@ -1,6 +1,21 @@
+/* 
+colors scheme green maybe
+  -mainColor #37B363
+  -secondaryColor #E7F6B5
+  -outlines/borders #53CA7D
+*/
+
+/* 
+color scheme blue maybe
+  -mainColor #107CF1
+  -secondaryColor #BDD3EF
+  -outlines/borders #94B8E5
+*/
+
 .hidden {
   display: none;
 }
+
 *{  /* universal "applies to everything everything"  */
   margin: 0;
   padding: 0;
@@ -8,29 +23,32 @@
 }
 
 body{
-  background-color: #37B363;
+  background-color: #BDD3EF;
 }
 
-.header-main {
+header {
   width: 100%;
   height: 50px;
   background-color: ;
   display: flex;
   justify-content:space-between;
   position: absolute;
-  border-bottom: 2px #53CA7D solid;
+  border-bottom: 2px #94B8E5 solid;
 }
 
-
-
 .header-main-link {
-  background-color: #E7F6B5;
+  /* background-color: #94B8E5; */
   margin:1rem auto;
-  
+  padding-right: 130px;
+
+}
+.header-main-link NavLink,a{
+  text-decoration: none;
+
 }
 
 .header-main-logo {
-
+  
 }
 
 .header-main .header-main-logo img {
@@ -39,30 +57,29 @@ body{
   top:-45px;
 }
 
-/* 
 
-colors
--mainColor #37B363
--secondaryColor #E7F6B5
--outlines/borders #53CA7D
-*/
+.header-top-right{
+  display: flex;
+  
+  
+}
 
-
-
-.header-profile-btn {
-  background-color: #E7F6B5;
+.header-top-right .header-profile-btn {
+  background-color: #BDD3EF;
   margin: .4rem;
   padding: 7px 18px;
   border-radius: 20px;
-  border: 3px solid #53CA7D;
+  border: 3px solid #94B8E5;
   position: absolute;
-  right:1%
+  right:1%;
 }
 
 .profile-btn-grp i+img{
   margin-left: 8px;
+
 }
 
 .menu{
   display: grid;
+
 }
