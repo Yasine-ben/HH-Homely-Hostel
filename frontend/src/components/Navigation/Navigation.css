@@ -29,7 +29,7 @@ body{
 header {
   width: 100%;
   height: 50px;
-  background-color: ;
+  
   display: flex;
   justify-content:space-between;
   position: absolute;
@@ -47,9 +47,9 @@ header {
 
 }
 
-.header-main-logo {
+/* .header-main-logo {
   
-}
+} */
 
 .header-main .header-main-logo img {
   height: 140px;
