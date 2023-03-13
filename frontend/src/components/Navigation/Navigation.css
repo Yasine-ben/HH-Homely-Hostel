@@ -12,6 +12,21 @@ color scheme blue maybe
   -outlines/borders #94B8E5
 */
 
+/* 
+color scheme white,purple,orange
+  -mainColor #FFFFFF
+  -secondaryColor #FF5841
+  outlines/borders #C53678
+  #D25C92
+*/
+
+/* 
+color scheme white,purple,orange 
+  -mainColor #FDF8F0 light-beige
+  -secondaryColor #F0122D crimson
+  -outlines/border black
+*/
+
 .hidden {
   display: none;
 }
@@ -23,63 +38,68 @@ color scheme blue maybe
 }
 
 body{
-  background-color: #BDD3EF;
+  background-color: #FDF8F0;
+  font-family: 'Josefin Sans', sans-serif;
 }
 
 header {
   width: 100%;
   height: 50px;
-  
   display: flex;
   justify-content:space-between;
   position: absolute;
-  border-bottom: 2px #94B8E5 solid;
+  /* border-bottom: 2px #94B8E5 solid; */
 }
 
 .header-main-link {
   /* background-color: #94B8E5; */
-  margin:1rem auto;
+  margin-top: 18px;
   padding-right: 130px;
-
+  
+  
 }
 .header-main-link NavLink,a{
   text-decoration: none;
-
+  color: rgb(43 96 67);
 }
 
-/* .header-main-logo {
-  
-} */
+
+.fa-solid,fa-bars{
+  color:rgb(43 96 67);
+}
 
 .header-main .header-main-logo img {
-  height: 140px;
+  height: 180px;
   position: absolute;
-  top:-45px;
+  top:-60px;
 }
 
 
 .header-top-right{
   display: flex;
-  
-  
 }
 
 .header-top-right .header-profile-btn {
-  background-color: #BDD3EF;
-  margin: .4rem;
+  background-color: rgb(218 230 211);
+  border: rgb(43 96 67) 2px solid;
+  margin: .65rem;
   padding: 7px 18px;
   border-radius: 20px;
-  border: 3px solid #94B8E5;
   position: absolute;
   right:1%;
+  top:2px;
 }
 
 .profile-btn-grp i+img{
   margin-left: 8px;
-
 }
 
 .menu{
   display: grid;
+}
 
+p.profile-btn-dropdown{
+  padding-top: 7px;
+  color:rgb(43 96 67);
+  justify-content: center;
 }

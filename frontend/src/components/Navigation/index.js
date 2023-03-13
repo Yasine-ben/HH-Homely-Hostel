@@ -4,7 +4,7 @@ import { Link, NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
 import './Navigation.css';
-import logo from "../assets/logo-new.png"
+import logo from "../assets/HH-green-logo.png"
 
 
 

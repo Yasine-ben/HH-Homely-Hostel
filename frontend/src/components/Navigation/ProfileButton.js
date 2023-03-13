@@ -43,7 +43,7 @@ function ProfileButton({ user }) {
   return (
     <>
       <i className="profile-btn-grp" onClick={openMenu}>
-        <i class="fa-solid fa-bars"></i>
+        <i class="fa-solid fa-bars" ></i>
         <img src={dPic} alt='logo' height='13px'/>
       </i>
       <ul className={ulClassName} ref={ulRef}>
@@ -59,12 +59,12 @@ function ProfileButton({ user }) {
         ) : (
           <>
             <OpenModalMenuItem
-              itemText="Log In"
+              itemText="*Log In*"
               onItemClick={closeMenu}
               modalComponent={<LoginFormModal />}
             />
             <OpenModalMenuItem
-              itemText="Sign Up"
+              itemText="*Sign Up*"
               onItemClick={closeMenu}
               modalComponent={<SignupFormModal />}
             />
