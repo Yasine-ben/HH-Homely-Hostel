@@ -1,4 +1,4 @@
-form {
+/* form {
     flex-direction: column;
     width: 400px;
     border-radius: 2%;
@@ -6,6 +6,12 @@ form {
     box-shadow: 0 10px 25px rgba(92, 99, 105, .2);
 }
 
-label input{
-    display: grid
+div#modal-content{
+
 }
+ */   
+
+/* label input{
+   display: grid;
+   margin: auto;
+}  */
