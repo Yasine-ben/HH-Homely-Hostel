@@ -15,7 +15,7 @@ function HomePageAllSpots(){
 
     useEffect(() => {
         dispatch(getAllSpots())
-        //console.log(spots)
+        console.log(spots)
     },[dispatch])
 
     
@@ -28,7 +28,7 @@ function HomePageAllSpots(){
             {spots.map(spot => {
                 return(
                 <Link 
-                    to="/"
+                    to={`/spots/${spot.id}`}
                     className="spot-card" 
                     key={spot.name}
                     // onClick={handleClick()}

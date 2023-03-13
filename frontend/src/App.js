@@ -6,6 +6,7 @@ import Navigation from "./components/Navigation";
 import HomePageAllSpots from "./components/HomePageAllSpots"
 import SpotPage from "./components/SpotPage";
 import CreateAListing from "./components/CreateAListing";
+import PageNotFound from "./components/PageNotFound";
 
 function App() {
   const dispatch = useDispatch();
@@ -33,7 +34,7 @@ function App() {
           </Route>
 
           <Route>
-            Page Not Found
+            <PageNotFound />
           </Route>
 
         </Switch>
