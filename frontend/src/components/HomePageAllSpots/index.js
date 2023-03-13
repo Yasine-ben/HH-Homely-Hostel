@@ -15,7 +15,7 @@ function HomePageAllSpots(){
 
     useEffect(() => {
         dispatch(getAllSpots())
-        console.log(spots)
+        //console.log(spots)
     },[dispatch])
 
     
