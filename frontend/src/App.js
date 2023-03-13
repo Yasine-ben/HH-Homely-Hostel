@@ -4,6 +4,8 @@ import { Route, Switch } from "react-router-dom";
 import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import HomePageAllSpots from "./components/HomePageAllSpots"
+import SpotPage from "./components/SpotPage";
+import CreateAListing from "./components/CreateAListing";
 
 function App() {
   const dispatch = useDispatch();
@@ -17,9 +19,23 @@ function App() {
       <Navigation isLoaded={isLoaded} />
       {isLoaded && (
         <Switch>
-          <Route path ='/'>
+
+          <Route exact path='/'>
             <HomePageAllSpots />
           </Route>
+
+          <Route path='/spots/create-a-listing'>
+            <CreateAListing />
+          </Route>
+
+          <Route path='/spots/:spotId' >
+            <SpotPage />
+          </Route>
+
+          <Route>
+            Page Not Found
+          </Route>
+
         </Switch>
       )}
     </>
