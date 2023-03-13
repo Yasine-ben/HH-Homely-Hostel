@@ -43,7 +43,7 @@ function ProfileButton({ user }) {
   return (
     <>
       <i className="profile-btn-grp" onClick={openMenu}>
-        <i class="fa-solid fa-bars" ></i>
+        <i className="fa-solid fa-bars" ></i>
         <img src={dPic} alt='logo' height='13px'/>
       </i>
       <ul className={ulClassName} ref={ulRef}>

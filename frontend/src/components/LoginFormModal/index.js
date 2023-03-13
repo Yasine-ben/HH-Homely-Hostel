@@ -22,7 +22,8 @@ function LoginFormModal() {
       .catch(
         async (res) => {
           const data = await res.json();
-          if (data && data.errors) setErrors(data.errors);
+          if (data && data.message) setErrors([(data.message).toString()]);
+          // console.log(data.message)
         }
       );
   };
@@ -38,6 +39,7 @@ function LoginFormModal() {
     }
 
     setErrors(e)
+  
   },[credential,password])
 
   const showPasswordFunc =  (e) => {
@@ -58,15 +60,15 @@ function LoginFormModal() {
         <h2>Log In</h2>
         <form onSubmit={handleSubmit}>
           <div className="input-box">
-            <p className="errors">
+            <h2 className="errors">
               {errors.map((error, idx) => (
                 <p key={idx}>{error}</p>
               ))}
-            </p>  
+            </h2>  
             <div className="input-box">
               <i 
                 id="icon" 
-                class="fa-solid fa-envelope"
+                className="fa-solid fa-envelope"
               ></i>
               <input 
                 type="text" 
@@ -76,7 +78,7 @@ function LoginFormModal() {
                 required 
               />
             </div>
-            <div className="input-box" for='passwordInput'>
+            <div className="input-box" htmlFor='passwordInput'>
               <input 
                 type="password" 
                 placeholder="Password" 
@@ -87,7 +89,7 @@ function LoginFormModal() {
               />
               <i 
                 id='icon' 
-                class={eyeOpen ? 'fa-sharp fa-solid fa-eye':'fa-solid fa-eye-slash' } 
+                className={eyeOpen ? 'fa-sharp fa-solid fa-eye':'fa-solid fa-eye-slash' } 
                 onClick={() => showPasswordFunc()}
               ></i>
             </div>
@@ -101,7 +103,7 @@ function LoginFormModal() {
             </button>
             <div className="login-register"> <p> Don't have an account? <Link className="register-link" to='/'>Register </Link> </p> </div>
             <div className="demo-user-login"> 
-              <Link 
+              <Link to="/"
               className="demo-link" 
               onClick={(() => ( //Come back to this closeModal isnt working
                 // setCredential('demo_user123'),

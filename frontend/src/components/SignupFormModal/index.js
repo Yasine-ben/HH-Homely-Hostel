@@ -50,9 +50,9 @@ function SignupFormModal() {
       <div className="form-box signUp">
         <h2>Sign Up</h2>
         <form onSubmit={handleSubmit}>
-            <p className="errors">
+            <h2 className="errors">
               {errors.map((error, idx) => <p key={idx}>{error}</p>)}
-            </p>
+            </h2>
             <div className="input-box">
               <input
                 type="text"
